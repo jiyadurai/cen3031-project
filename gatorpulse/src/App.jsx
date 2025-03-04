@@ -4,6 +4,8 @@ import { db, collection, addDoc } from "./firebase";
 export default function App() {
   const [count, setCount] = useState(0);
   const addData = async () => {
+    setCount(count + 1);
+    alert("Sending Document " + count)
     try {
       await addDoc(collection(db, "users"), {
         name: "Test Update: " + count,
