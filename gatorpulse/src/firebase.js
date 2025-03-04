@@ -1,11 +1,11 @@
-// Import the functions you need from the SDKs you need
+// Firebase Imports
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 import { collection, addDoc } from "firebase/firestore";
-// TODO: Add SDKs for Firebase products that you want to use
+// We can add SDKs for Firebase products that we want to use here
 // https://firebase.google.com/docs/web/setup#available-libraries
 
-// Your web app's Firebase configuration
+// gatorpuse Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
@@ -21,4 +21,5 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
+// Export so other files can access database
 export { db, collection, addDoc };
