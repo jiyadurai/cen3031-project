@@ -1,8 +1,8 @@
 // import React from 'react'
-import { useState } from 'react'
 
-export default function LoginModal({ OpenLoginModal, toggleModalOff }) {
+export default function SignUpModal({ OpenLoginModal, setLoginVisibility }) {
     const AuthForm = () => {
+        const [email, setEmail] = useState("");
         const [password, setPassword] = useState("");
         const [username, setUsername] = useState("");
       
@@ -10,6 +10,7 @@ export default function LoginModal({ OpenLoginModal, toggleModalOff }) {
           e.preventDefault()
       
           const userData = {
+            email,
             password,
             username,
           };
@@ -26,7 +27,6 @@ export default function LoginModal({ OpenLoginModal, toggleModalOff }) {
           const result = await response.json()
           console.log(result) // Handle the response
     }
-  }
   return (
     // <>
     //     <div className='modal-box bg-[white] max-w-[100vw] w-[80vw] h-[41vw] 2xl:h-[30.9vw]'>
@@ -37,14 +37,14 @@ export default function LoginModal({ OpenLoginModal, toggleModalOff }) {
     // </>
         <div
           className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center"
-          onClick={toggleModalOff}
+        //   onClick={setLoginVisibility(false)}
         >
           <div
             className="modal modal-open"
             onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside the modal
           >
             <div className="modal-box bg-white p-6 rounded shadow-xl">
-              <h2 className="text-xl font-semibold mb-4">Login</h2>
+              <h2 className="text-xl font-semibold mb-4">Sign Up</h2>
               {/* Form inside modal */}
               <form>
                 <div className="mb-4">
@@ -58,6 +58,19 @@ export default function LoginModal({ OpenLoginModal, toggleModalOff }) {
                     placeholder="Enter your username"
                     className="input input-bordered w-full mt-2"
                     onChange={(e) => setUsername(e.target.value)}
+                  />
+                </div>
+                <div className="mb-4">
+                  <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                    Email
+                  </label>
+                  <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    placeholder="Enter your email"
+                    className="input input-bordered w-full mt-2"
+                    onChange={(e) => setEmail(e.target.value)}
                   />
                 </div>
                 <div className="mb-4">
@@ -77,7 +90,7 @@ export default function LoginModal({ OpenLoginModal, toggleModalOff }) {
                   <button
                     type="button"
                     className="btn bg-black text-white hover:bg-gray-800"
-                    onClick={toggleModalOff}
+                    // onClick={setLoginVisibility(false)}
                   >
                     Close
                   </button>
@@ -90,4 +103,4 @@ export default function LoginModal({ OpenLoginModal, toggleModalOff }) {
           </div>
         </div>
   )
-}
+}}
