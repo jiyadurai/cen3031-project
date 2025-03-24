@@ -1,8 +1,13 @@
 // import React from 'react'
 import { useState } from 'react'
+import { useEffect } from "react";
 
 export default function LoginModal({ OpenLoginModal, toggleModalOff }) {
     const AuthForm = () => {
+      useEffect(() => {
+        console.log("Login Modal rendered");
+      }, []);
+
         const [password, setPassword] = useState("");
         const [username, setUsername] = useState("");
       
