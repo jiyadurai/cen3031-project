@@ -1,7 +1,7 @@
 // import React from 'react'
 import { useState } from 'react'
 
-export default function LoginModal({ OpenLoginModal, setLoginVisibility }) {
+export default function LoginModal({ OpenLoginModal, toggleModalOff }) {
     const AuthForm = () => {
         const [password, setPassword] = useState("");
         const [username, setUsername] = useState("");
@@ -37,7 +37,7 @@ export default function LoginModal({ OpenLoginModal, setLoginVisibility }) {
     // </>
         <div
           className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center"
-        //   onClick={setLoginVisibility(false)}
+          onClick={toggleModalOff}
         >
           <div
             className="modal modal-open"
@@ -77,7 +77,7 @@ export default function LoginModal({ OpenLoginModal, setLoginVisibility }) {
                   <button
                     type="button"
                     className="btn bg-black text-white hover:bg-gray-800"
-                    // onClick={setLoginVisibility(false)}
+                    onClick={toggleModalOff}
                   >
                     Close
                   </button>
