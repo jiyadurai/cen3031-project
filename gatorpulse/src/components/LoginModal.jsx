@@ -26,6 +26,7 @@ export default function LoginModal({ OpenLoginModal, setLoginVisibility }) {
           const result = await response.json()
           console.log(result) // Handle the response
     }
+  }
   return (
     // <>
     //     <div className='modal-box bg-[white] max-w-[100vw] w-[80vw] h-[41vw] 2xl:h-[30.9vw]'>
@@ -89,4 +90,4 @@ export default function LoginModal({ OpenLoginModal, setLoginVisibility }) {
           </div>
         </div>
   )
-}}
+}
