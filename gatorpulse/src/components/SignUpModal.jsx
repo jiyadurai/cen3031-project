@@ -6,6 +6,7 @@ export default function SignUpModal({ OpenSignUpModal, toggleModalOff }) {
 
     useEffect(() => {
         console.log("SignUp Modal rendered");
+        console.log(OpenSignUpModal);
     }, []);
 
     const AuthForm = () => {
@@ -34,6 +35,7 @@ export default function SignUpModal({ OpenSignUpModal, toggleModalOff }) {
           const result = await response.json()
           console.log(result) // Handle the response
     }
+  }
   return (
     // <>
     //     <div className='modal-box bg-[white] max-w-[100vw] w-[80vw] h-[41vw] 2xl:h-[30.9vw]'>
@@ -110,4 +112,4 @@ export default function SignUpModal({ OpenSignUpModal, toggleModalOff }) {
         </div>
       </div>
   )
-}}
+}
