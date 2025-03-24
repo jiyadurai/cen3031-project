@@ -1,8 +1,8 @@
 // import React from 'react'
-import { useState } from 'react'
 
-export default function LoginModal({ OpenLoginModal, setLoginVisibility }) {
+export default function SignUpModal({ OpenLoginModal, setLoginVisibility }) {
     const AuthForm = () => {
+        const [email, setEmail] = useState("");
         const [password, setPassword] = useState("");
         const [username, setUsername] = useState("");
       
@@ -10,6 +10,7 @@ export default function LoginModal({ OpenLoginModal, setLoginVisibility }) {
           e.preventDefault()
       
           const userData = {
+            email,
             password,
             username,
           };
@@ -43,7 +44,7 @@ export default function LoginModal({ OpenLoginModal, setLoginVisibility }) {
             onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside the modal
           >
             <div className="modal-box bg-white p-6 rounded shadow-xl">
-              <h2 className="text-xl font-semibold mb-4">Login</h2>
+              <h2 className="text-xl font-semibold mb-4">Sign Up</h2>
               {/* Form inside modal */}
               <form>
                 <div className="mb-4">
@@ -57,6 +58,19 @@ export default function LoginModal({ OpenLoginModal, setLoginVisibility }) {
                     placeholder="Enter your username"
                     className="input input-bordered w-full mt-2"
                     onChange={(e) => setUsername(e.target.value)}
+                  />
+                </div>
+                <div className="mb-4">
+                  <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                    Email
+                  </label>
+                  <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    placeholder="Enter your email"
+                    className="input input-bordered w-full mt-2"
+                    onChange={(e) => setEmail(e.target.value)}
                   />
                 </div>
                 <div className="mb-4">
