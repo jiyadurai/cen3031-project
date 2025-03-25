@@ -3,43 +3,49 @@ import { useState } from 'react'
 import { useEffect } from "react";
 
 export default function LoginModal({ OpenLoginModal, toggleModalOff }) {
-    const AuthForm = () => {
-      useEffect(() => {
-        console.log("Login Modal rendered");
-      }, []);
+    const [password, setPassword] = useState("");
+    const [username, setUsername] = useState("");
 
-        const [password, setPassword] = useState("");
-        const [username, setUsername] = useState("");
-      
-        const handleSubmit = async (e) => {
-          e.preventDefault()
-      
-          const userData = {
-            password,
-            username,
-          };
-      
-          // Send POST request to Flask server
-          const response = await fetch("http://localhost:5000/pythonserverURL", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(userData),
-          });
-      
-          const result = await response.json()
-          console.log(result) // Handle the response
+    const TestForm = (e) => {
+      e.preventDefault();
+      console.log("handleSubmit Login called");
+      console.log("username: " + username);
+      console.log("password: " + password);
     }
-  }
+
+    // Enable belwo when server ready
+  //   const AuthForm = () => {
+  //     useEffect(() => {
+  //       console.log("Login Modal rendered");
+  //     }, []);
+
+        
+      
+  //       const handleSubmit = async (e) => {
+  //         e.preventDefault()
+  //         console.log("handleSubmit Login called");
+  //         console.log("username: " + username);
+  //         console.log("password: " + password);
+      
+  //         const userData = {
+  //           password,
+  //           username,
+  //         };
+      
+  //         // Send POST request to Flask server
+  //         const response = await fetch("https://jsonplaceholder.typicode.com/posts", {
+  //           method: "POST",
+  //           headers: {
+  //             "Content-Type": "application/json",
+  //           },
+  //           body: JSON.stringify(userData),
+  //         });
+      
+  //         const result = await response.json()
+  //         console.log(result) // Handle the response
+  //   }
+  // }
   return (
-    // <>
-    //     <div className='modal-box bg-[white] max-w-[100vw] w-[80vw] h-[41vw] 2xl:h-[30.9vw]'>
-    //     </div>
-    //     <form method="dialog" className="modal-backdrop">
-    //         <button>close</button>
-    //     </form>
-    // </>
         <div
           className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center"
           onClick={toggleModalOff}
@@ -51,7 +57,7 @@ export default function LoginModal({ OpenLoginModal, toggleModalOff }) {
             <div className="modal-box bg-white p-6 rounded shadow-xl">
               <h2 className="text-xl font-semibold mb-4">Login</h2>
               {/* Form inside modal */}
-              <form>
+              <form onSubmit={TestForm}>
                 <div className="mb-4">
                   <label htmlFor="username" className="block text-sm font-medium text-gray-700">
                     Username
@@ -96,3 +102,5 @@ export default function LoginModal({ OpenLoginModal, toggleModalOff }) {
         </div>
   )
 }
+
+
