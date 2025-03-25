@@ -11,13 +11,32 @@ export default function SignUpModal({ OpenSignUpModal, toggleModalOff }) {
         console.log(OpenSignUpModal);
     }, [OpenSignUpModal]);
 
-    const TestForm = (e) => {
-        e.preventDefault();
+    const handleSubmit = async (e) => {
+        e.preventDefault()
         console.log("handleSubmit SignUp called");
         console.log("username: " + username);
         console.log("password: " + password);
         console.log("email: " + email);
+
+        const userData = {
+            password,
+            username,
+            email,
+        };
+
+        // Send POST request to Flask server
+        const response = await fetch("http://localhost:5000/signup", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(userData),
+        });
+
+        const result = await response.json()
+        console.log(result) // Handle the response
     }
+
 
     return (
         <div
@@ -31,7 +50,7 @@ export default function SignUpModal({ OpenSignUpModal, toggleModalOff }) {
                 <div className="modal-box bg-white p-6 rounded shadow-xl">
                     <h2 className="text-xl font-semibold mb-4">Sign Up</h2>
                     {/* Form inside modal */}
-                    <form onSubmit={TestForm}>
+                    <form onSubmit={handleSubmit}>
                         <div className="mb-4">
                             <label htmlFor="username" className="block text-sm font-medium text-gray-700">
                                 Username

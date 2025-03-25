@@ -6,45 +6,37 @@ export default function LoginModal({ OpenLoginModal, toggleModalOff }) {
     const [password, setPassword] = useState("");
     const [username, setUsername] = useState("");
 
-    const TestForm = (e) => {
-      e.preventDefault();
-      console.log("handleSubmit Login called");
-      console.log("username: " + username);
-      console.log("password: " + password);
-    }
+    const AuthForm = () => {
+      useEffect(() => {
+        console.log("Login Modal rendered");
+      }, []);
+  }
 
-    // Enable belwo when server ready
-  //   const AuthForm = () => {
-  //     useEffect(() => {
-  //       console.log("Login Modal rendered");
-  //     }, []);
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    console.log("handleSubmit Login called");
+    console.log("username: " + username);
+    console.log("password: " + password);
 
-        
-      
-  //       const handleSubmit = async (e) => {
-  //         e.preventDefault()
-  //         console.log("handleSubmit Login called");
-  //         console.log("username: " + username);
-  //         console.log("password: " + password);
-      
-  //         const userData = {
-  //           password,
-  //           username,
-  //         };
-      
-  //         // Send POST request to Flask server
-  //         const response = await fetch("https://jsonplaceholder.typicode.com/posts", {
-  //           method: "POST",
-  //           headers: {
-  //             "Content-Type": "application/json",
-  //           },
-  //           body: JSON.stringify(userData),
-  //         });
-      
-  //         const result = await response.json()
-  //         console.log(result) // Handle the response
-  //   }
-  // }
+    const userData = {
+      password,
+      username,
+    };
+
+    // Send POST request to Flask server
+    const response = await fetch("http://localhost:5000/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(userData),
+    });
+
+    const result = await response.json()
+    console.log(result) // Handle the response
+  }
+
+
   return (
         <div
           className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center"
@@ -57,7 +49,7 @@ export default function LoginModal({ OpenLoginModal, toggleModalOff }) {
             <div className="modal-box bg-white p-6 rounded shadow-xl">
               <h2 className="text-xl font-semibold mb-4">Login</h2>
               {/* Form inside modal */}
-              <form onSubmit={TestForm}>
+              <form onSubmit={handleSubmit}>
                 <div className="mb-4">
                   <label htmlFor="username" className="block text-sm font-medium text-gray-700">
                     Username
