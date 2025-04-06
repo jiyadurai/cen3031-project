@@ -9,20 +9,26 @@ app = Flask(__name__)
 cors = CORS(app, origins="*")
 
 # Initialize Firebase Admin SDK
-cred = credentials.Certificate('./gatorpulse/servicekey.json') # Obtain private key from firebase and rename it to "servicekey.json"
+cred = credentials.Certificate(
+    "../gatorpulse/servicekey.json"
+)  # Obtain private key from firebase and rename it to "servicekey.json"
 firebase_admin.initialize_app(cred)
 
 db = firestore.client()
 
 ref = db.collection("users")
 
-@app.route('/login', methods=['POST'])
+
+@app.route("/login", methods=["POST"])
 def login():
     data = request.get_json()
 
-    usernameCheck = ref.where(filter=FieldFilter("username", "==", data.get("username"))).get()
-    passCheck = ref.where(filter=FieldFilter("username", "==", data.get("username"))).get()
-
+    usernameCheck = ref.where(
+        filter=FieldFilter("username", "==", data.get("username"))
+    ).get()
+    passCheck = ref.where(
+        filter=FieldFilter("username", "==", data.get("username"))
+    ).get()
 
     if len(usernameCheck) == 0:
         print("Username doesn't exist!")
@@ -36,13 +42,15 @@ def login():
         return jsonify({"message": "success!"})
 
 
-@app.route('/signup', methods=['POST'])
+@app.route("/signup", methods=["POST"])
 def signup():
     data = request.get_json()
     print(data.get("username"), data.get("password"), data.get("email"))
 
     # Need to add encryption and email verification
-    usernameCheck = ref.where(filter=FieldFilter("username", "==", data.get("username"))).get()
+    usernameCheck = ref.where(
+        filter=FieldFilter("username", "==", data.get("username"))
+    ).get()
     emailCheck = ref.where(filter=FieldFilter("email", "==", data.get("email"))).get()
 
     if len(usernameCheck) > 0:
@@ -50,13 +58,16 @@ def signup():
         return jsonify({"message": "failure!"})
     else:
         print("Creating new user...")
-        ref.add({
-            "createdAt": firestore.SERVER_TIMESTAMP,
-            "email": data.get("email"),
-            "username": data.get("username"),
-            "password": data.get("password")
-        })
+        ref.add(
+            {
+                "createdAt": firestore.SERVER_TIMESTAMP,
+                "email": data.get("email"),
+                "username": data.get("username"),
+                "password": data.get("password"),
+            }
+        )
         return jsonify({"message": "success!"})
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     app.run(debug=True, port=5000)
