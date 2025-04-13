@@ -10,7 +10,7 @@ cors = CORS(app, origins="*")
 
 # Initialize Firebase Admin SDK
 cred = credentials.Certificate(
-    "../gatorpulse/servicekey.json"
+    "../servicekey.json"
 )  # Obtain private key from firebase and rename it to "servicekey.json"
 firebase_admin.initialize_app(cred)
 
