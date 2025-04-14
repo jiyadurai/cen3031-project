@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import Header from './Header'
 import EventBox from './EventBox';
 
-export default function FeedPage() {
+export default function FeedPage({page, setPage, user, setUser}) {
   // On load the feed page will go into the selectedDate state (can be one day or range of dates) and then go into the backend and have a request for data for that specifc date.
   // It will then feed this information into the event box and post components.
   // The event box will be a list of events that are happening on that date.
@@ -18,6 +18,8 @@ export default function FeedPage() {
   
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [events, setEvents] = useState([]);
+
+  useEffect(() => {setPage('feed')}, []); // Updates the page state to 'feed' when the component mounts aka feed page loads)
 
   // Simulate fetching events from an API (you can swap with actual fetch later)
   useEffect(() => {
@@ -40,7 +42,7 @@ export default function FeedPage() {
   return (
     <>
       <div className="min-h-screen bg-white flex flex-col">
-        <Header selectedDate={selectedDate} setSelectedDate={setSelectedDate} />
+        <Header page={page} selectedDate={selectedDate} setSelectedDate={setSelectedDate} />
         <div className="text-center font-semibold text-lg mt-4 text-gray-800">
           Events for {formattedDate}
         </div>

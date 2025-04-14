@@ -1,25 +1,30 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
 import Header from './Header'
 import LoginModal from './LoginModal'
 import SignUpModal from './SignUpModal'
 import HomeScreen from '../../public/UFbackground1.jpg'
 
-export default function Home({user, setUser}) {
+export default function Home({page, setPage, user, setUser}) {
 
     const [OpenLoginModal, setLoginVisibility] = useState(false);
     const [OpenSignUpModal, setSignUpVisibility] = useState(false);
     const toggleLoginModalOff = () => {
         console.log("toggleLoginModalOff called");
-        setLoginVisibility(false);
     }
+
     const toggleSignUpModalOff = () => {
         console.log("toggleSignModalOff called");
         setSignUpVisibility(false);
     }
 
+    useEffect(() => {setPage('home')
+        console.log(page + " page rendered");
+    }, [])
+
   return (
     <section className={`bg-cover bg-center h-[100vh] w-[100%] absolute`}  style={{ backgroundImage: `url(${HomeScreen})` }}>
-        <Header></Header>
+        <Header page={page}></Header>
         {OpenLoginModal && <LoginModal setUser={setUser} OpenLoginModal={OpenLoginModal} toggleModalOff={toggleLoginModalOff}></LoginModal>}
         {OpenSignUpModal && <SignUpModal OpenSignUpModal={OpenSignUpModal} toggleModalOff={toggleSignUpModalOff}></SignUpModal>}
         <div className="flex flex-col items-center justify-center w-[100%] h-[100vh]">
@@ -35,3 +40,10 @@ export default function Home({user, setUser}) {
     </section>
   )
 }
+
+Home.propTypes = {
+    page: PropTypes.string.isRequired,
+    setPage: PropTypes.func.isRequired,
+    user: PropTypes.object,
+    setUser: PropTypes.func.isRequired,
+};
