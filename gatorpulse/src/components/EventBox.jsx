@@ -7,7 +7,7 @@ export default function EventBox({ event }) {
         <div className="card-body">
             <h2 className="card-title text-xl">{event.title}</h2>
             <p className="text-sm text-gray-600">{event.time}</p>
-            <div className="badge badge-primary mt-2">{event.tag}</div>
+            <div className="badge badge-secondary mt-2">{event.tag}</div>
         </div>
     </div>
 )}

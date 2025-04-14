@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Header from './Header'
 import EventBox from './EventBox';
+import PropTypes from 'prop-types';
 
 export default function FeedPage({page, setPage, user, setUser}) {
   // On load the feed page will go into the selectedDate state (can be one day or range of dates) and then go into the backend and have a request for data for that specifc date.
@@ -58,3 +59,10 @@ export default function FeedPage({page, setPage, user, setUser}) {
     </>
   )
 }
+
+FeedPage.propTypes = {
+  page: PropTypes.string.isRequired,
+  setPage: PropTypes.func.isRequired,
+  user: PropTypes.object,
+  setUser: PropTypes.func
+};
