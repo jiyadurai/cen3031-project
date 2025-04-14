@@ -27,9 +27,9 @@ export default function FeedPage({page, setPage, user, setUser}) {
     const fetchEvents = async () => {
       // Replace this with actual API logic
       const fakeEvents = [
-        { id: '1', title: 'Yoga on the Lawn', time: '9:00 AM', tag: '#wellness' },
-        { id: '2', title: 'Career Fair', time: '1:00 PM', tag: '#career' },
-        { id: '3', title: 'Trivia Night', time: '7:00 PM', tag: '#fun' },
+        { id: '1', title: 'Yoga on the Lawn', time: '9:00 AM', tag: '#wellness', posts: [{Title: 'Let’s gooo 🐊🔥', Description: 'Meet me by the fountain'}, {Title: 'Let’s gooo 🐊🔥', Description: 'Meet me by the fountain'}, {Title: 'Let’s gooo 🐊🔥', Description: 'Meet me by the fountain'}]},
+        { id: '2', title: 'Career Fair', time: '1:00 PM', tag: '#career', posts: [{Title: 'Squad pulling up tonight 💃🏾', Description: 'We linking at Turlington at 6PM sharp'}, {Title: 'Squad pulling up tonight 💃🏾', Description: 'We linking at Turlington at 6PM sharp'}, {Title: 'Squad pulling up tonight 💃🏾', Description: 'We linking at Turlington at 6PM sharp'}]},
+        { id: '3', title: 'Trivia Night', time: '7:00 PM', tag: '#fun', posts: [{Title: 'First Gator Pulse meetup 🐊💬', Description: 'Come chill, meet new people, and vibe with us 🎶'}]},
         // Add more to test scrolling
       ];
       setEvents(fakeEvents);
