@@ -4,7 +4,7 @@ import LoginModal from './LoginModal'
 import SignUpModal from './SignUpModal'
 import HomeScreen from '../../public/UFbackground1.jpg'
 
-export default function Home() {
+export default function Home({user, setUser}) {
 
     const [OpenLoginModal, setLoginVisibility] = useState(false);
     const [OpenSignUpModal, setSignUpVisibility] = useState(false);
@@ -20,7 +20,7 @@ export default function Home() {
   return (
     <section className={`bg-cover bg-center h-[100vh] w-[100%] absolute`}  style={{ backgroundImage: `url(${HomeScreen})` }}>
         <Header></Header>
-        {OpenLoginModal && <LoginModal OpenLoginModal={OpenLoginModal} toggleModalOff={toggleLoginModalOff}></LoginModal>}
+        {OpenLoginModal && <LoginModal setUser={setUser} OpenLoginModal={OpenLoginModal} toggleModalOff={toggleLoginModalOff}></LoginModal>}
         {OpenSignUpModal && <SignUpModal OpenSignUpModal={OpenSignUpModal} toggleModalOff={toggleSignUpModalOff}></SignUpModal>}
         <div className="flex flex-col items-center justify-center w-[100%] h-[100vh]">
             <div className='w-[50vw] h-[30vh] flex justify-center items-center rounded-md text-center bg-[#f0ffffc9]'>

@@ -1,10 +1,12 @@
 // import React from 'react'
 import { useState } from 'react'
 import { useEffect } from "react";
+import { useNavigate } from 'react-router-dom';
 
-export default function LoginModal({ OpenLoginModal, toggleModalOff }) {
+export default function LoginModal({setUser, OpenLoginModal, toggleModalOff }) {
     const [password, setPassword] = useState("");
     const [username, setUsername] = useState("");
+    const navigate = useNavigate();
 
     const AuthForm = () => {
       useEffect(() => {
@@ -33,7 +35,10 @@ export default function LoginModal({ OpenLoginModal, toggleModalOff }) {
     });
 
     const result = await response.json()
+    // IF login is successful, redirect to feed page (Add logic to check if login is successful HERE)
     console.log(result) // Handle the response
+    setUser(result); // Set the user state to the result from the server (NEEDS TO BE UDATED TO THE USER OBJECT)
+    navigate('/feed');
   }
 
 
