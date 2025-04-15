@@ -2,7 +2,7 @@ import {React, useState} from 'react'
 import PropTypes from 'prop-types'
 import PostModal from './PostModal';
 
-export default function EventBox({ event }) {
+export default function EventBox({ allEvents, event, setEvents }) {
     const [modalOpen, setModalOpen] = useState(false);
     console.log('event.posts:', event.posts);
 
@@ -19,6 +19,9 @@ export default function EventBox({ event }) {
             isOpen={modalOpen}
             setModalOpen={setModalOpen}
             posts={event.posts}
+            curEvent={event}
+            allEvents={allEvents}
+            setEvents={setEvents}
         />
     </>
 )}
@@ -35,5 +38,26 @@ EventBox.propTypes = {
           Description: PropTypes.string.isRequired,
         })
       ).isRequired,
+  }).isRequired,
+  allEvents: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+      title: PropTypes.string.isRequired,
+      time: PropTypes.string.isRequired,
+      tag: PropTypes.string.isRequired,
+      posts: PropTypes.arrayOf(
+        PropTypes.shape({
+          Title: PropTypes.string.isRequired,
+          Description: PropTypes.string.isRequired,
+        })
+      ).isRequired,
+    })
+  ).isRequired,
+  setEvents: PropTypes.func.isRequired,
+  curEvent: PropTypes.shape({
+    id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+    title: PropTypes.string.isRequired,
+    time: PropTypes.string.isRequired,
+    tag: PropTypes.string.isRequired,
   }).isRequired,
 }

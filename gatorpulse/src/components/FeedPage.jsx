@@ -27,9 +27,9 @@ export default function FeedPage({page, setPage, user, setUser}) {
     const fetchEvents = async () => {
       // Replace this with actual API logic
       const fakeEvents = [
-        { id: '1', title: 'Yoga on the Lawn', time: '9:00 AM', tag: '#wellness', posts: [{User: {Name: 'Lacy Hunters', ProfilePic: 'https://i.pravatar.cc/150?img=32'}, Likes: 0, Title: 'Let’s gooo 🐊🔥', Description: 'Meet me by the fountain', Picture: 'https://picsum.photos/800/600'}, {User: {Name: 'Lacy Hunters', ProfilePic: 'https://i.pravatar.cc/150?img=32'}, Likes: 0, Title: 'Let’s gooo 🐊🔥', Description: 'Meet me by the fountain', Picture: 'https://picsum.photos/800/600'}, {User: {Name: 'Lacy Hunters', ProfilePic: 'https://i.pravatar.cc/150?img=32'}, Likes: 0, Title: 'Let’s gooo 🐊🔥', Description: 'Meet me by the fountain', Picture: 'https://picsum.photos/800/600'}]},
-        { id: '2', title: 'Career Fair', time: '1:00 PM', tag: '#career', posts: [{User: {Name: 'Lacy Hunters', ProfilePic: 'https://i.pravatar.cc/150?img=32'}, Likes: 0, Title: 'Squad pulling up tonight 💃🏾', Description: 'We linking at Turlington at 6PM sharp', Picture: 'https://picsum.photos/800/600'}, {User: {Name: 'Lacy Hunters', ProfilePic: 'https://i.pravatar.cc/150?img=32'}, Likes: 0, Title: 'Squad pulling up tonight 💃🏾', Description: 'We linking at Turlington at 6PM sharp', Picture: 'https://picsum.photos/800/600'}, {User: {Name: 'Lacy Hunters', ProfilePic: 'https://i.pravatar.cc/150?img=32'}, Likes: 0, Title: 'Squad pulling up tonight 💃🏾', Description: 'We linking at Turlington at 6PM sharp', Picture: 'https://picsum.photos/800/600'}]},
-        { id: '3', title: 'Trivia Night', time: '7:00 PM', tag: '#fun', posts: [{User: {Name: 'Lacy Hunters', ProfilePic: 'https://i.pravatar.cc/150?img=32'}, Likes: 0, Title: 'First Gator Pulse meetup 🐊💬', Description: 'Come chill, meet new people, and vibe with us 🎶', Picture: 'https://picsum.photos/800/600'}]},
+        { id: '1', title: 'Yoga on the Lawn', time: '9:00 AM', tag: '#wellness', posts: [{id: '1', User: {Name: 'Lacy Hunters', ProfilePic: 'https://i.pravatar.cc/150?img=32'}, Likes: 0, Title: 'Let’s gooo 🐊🔥', Description: 'Meet me by the fountain', Picture: 'https://picsum.photos/800/600'}, {id: '2', User: {Name: 'Lacy Hunters', ProfilePic: 'https://i.pravatar.cc/150?img=32'}, Likes: 0, Title: 'Let’s gooo 🐊🔥', Description: 'Meet me by the fountain', Picture: 'https://picsum.photos/800/600'}, {id: '3', User: {Name: 'Lacy Hunters', ProfilePic: 'https://i.pravatar.cc/150?img=32'}, Likes: 0, Title: 'Let’s gooo 🐊🔥', Description: 'Meet me by the fountain', Picture: 'https://picsum.photos/800/600'}]},
+        { id: '2', title: 'Career Fair', time: '1:00 PM', tag: '#career', posts: [{id: '4', User: {Name: 'Lacy Hunters', ProfilePic: 'https://i.pravatar.cc/150?img=32'}, Likes: 0, Title: 'Squad pulling up tonight 💃🏾', Description: 'We linking at Turlington at 6PM sharp', Picture: 'https://picsum.photos/800/600'}, {id: '5', User: {Name: 'Lacy Hunters', ProfilePic: 'https://i.pravatar.cc/150?img=32'}, Likes: 0, Title: 'Squad pulling up tonight 💃🏾', Description: 'We linking at Turlington at 6PM sharp', Picture: 'https://picsum.photos/800/600'}, {id: '6', User: {Name: 'Lacy Hunters', ProfilePic: 'https://i.pravatar.cc/150?img=32'}, Likes: 0, Title: 'Squad pulling up tonight 💃🏾', Description: 'We linking at Turlington at 6PM sharp', Picture: 'https://picsum.photos/800/600'}]},
+        { id: '3', title: 'Trivia Night', time: '7:00 PM', tag: '#fun', posts: [{id: '7', User: {Name: 'Lacy Hunters', ProfilePic: 'https://i.pravatar.cc/150?img=32'}, Likes: 0, Title: 'First Gator Pulse meetup 🐊💬', Description: 'Come chill, meet new people, and vibe with us 🎶', Picture: 'https://picsum.photos/800/600'}]},
         // Add more to test scrolling
       ];
       setEvents(fakeEvents);
@@ -51,7 +51,7 @@ export default function FeedPage({page, setPage, user, setUser}) {
         <div className="flex-1 overflow-y-scroll mt-4 px-4 pb-6">
           <div className="flex flex-col gap-4 max-w-2xl mx-auto">
             {events.map((event) => (
-              <EventBox key={event.id} event={event} />
+              <EventBox key={event.id} event={event} setEvents={setEvents} allEvents={events} />
             ))}
           </div>
         </div>

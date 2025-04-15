@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types';
 
-export default function Post({isOpen, setModalOpen, posts}) {
+export default function Post({isOpen, setModalOpen, posts, curEvent, allEvents, setEvents}) {
     if (!isOpen) return null;
     console.log('Received posts:', posts);
 
@@ -35,7 +35,20 @@ export default function Post({isOpen, setModalOpen, posts}) {
 
                     {/* Like Button */}
                     <div className="flex items-center space-x-1">
-                        <button className="text-red-500 hover:text-red-600 text-xl">❤️</button>
+                        <button onClick={() => {
+                            setEvents(prevEvents =>
+                                prevEvents.map(ev => {
+                                  if (ev.id !== curEvent.id) return ev;
+                                  return {
+                                    ...ev,
+                                    posts: ev.posts.map(p =>
+                                        p.id === post.id ? { ...p, Likes: p.Likes + 1 } : p
+                                      )
+                                  };
+                                })
+                              );
+                            }
+                        } className="text-red-500 hover:text-red-600 text-xl">❤️</button>
                         <span className="text-sm text-gray-700">{post.Likes}</span>
                     </div>
                 </div>
@@ -63,4 +76,7 @@ Post.propTypes = {
           Description: PropTypes.string.isRequired
         })
       ).isRequired,
+    curEvent: PropTypes.shape({
+        id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+    }).isRequired,
 };
