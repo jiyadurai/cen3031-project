@@ -24,6 +24,11 @@ export default function Post({isOpen, setModalOpen, posts}) {
               >
                 <h3 className="text-md font-bold">{post.Title}</h3>
                 <p className="text-sm text-gray-700">{post.Description}</p>
+                {post.Picture && (
+                    <img src={post.Picture} alt={post.Title} className="rounded mb-2 w-full h-40 object-cover" />
+                )}
+                {/* Add picture field on posts, and like field then design both here
+                Ensure we pass down setEvents or whatever so we can edit the posts with its likes */}
               </div>
             ))}
           </div>
