@@ -22,6 +22,23 @@ export default function Post({isOpen, setModalOpen, posts}) {
                 key={i}
                 className="snap-start shrink-0 w-full bg-blue-100 rounded-lg p-4 shadow"
               >
+                <div className="flex items-center justify-between mb-4">
+                    {/* User Info */}
+                    <div className="flex items-center space-x-3">
+                        <img
+                        src={post.User.ProfilePic}
+                        alt={post.User.Name}
+                        className="w-10 h-10 rounded-full object-cover"
+                        />
+                        <h3 className="text-md font-semibold">{post.User.Name}</h3>
+                    </div>
+
+                    {/* Like Button */}
+                    <div className="flex items-center space-x-1">
+                        <button className="text-red-500 hover:text-red-600 text-xl">❤️</button>
+                        <span className="text-sm text-gray-700">{post.Likes}</span>
+                    </div>
+                </div>
                 <h3 className="text-md font-bold">{post.Title}</h3>
                 <p className="text-sm text-gray-700">{post.Description}</p>
                 {post.Picture && (
