@@ -8,7 +8,7 @@ export default function EventBox({ allEvents, event, setEvents }) {
 
   return (
     <>
-        <div key={event.id} onClick={() => setModalOpen(true)} className="card bg-base-100 shadow-md border border-gray-200 hover:shadow-lg transition-all">
+        <div key={event.id} onClick={() => setModalOpen(true)} className="card bg-base-100 shadow-md border border-gray-200 hover:shadow-lg transition-all cursor-pointer">
             <div className="card-body">
                 <h2 className="card-title text-xl">{event.title}</h2>
                 <p className="text-sm text-gray-600">{event.time}</p>
