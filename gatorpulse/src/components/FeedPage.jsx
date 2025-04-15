@@ -7,22 +7,14 @@ export default function FeedPage({page, setPage, user, setUser}) {
   // On load the feed page will go into the selectedDate state (can be one day or range of dates) and then go into the backend and have a request for data for that specifc date.
   // It will then feed this information into the event box and post components.
   // The event box will be a list of events that are happening on that date.
-  // The post component will be a list of posts that are happening on that date.
-
-  // What each event holds
-  // const Event = {
-  //   id: '',
-  //   title: '',
-  //   time: '',
-  //   tag: ''
-  // };
+  // The post modal be a list of posts that are happening on that date.
   
   const [selectedDate, setSelectedDate] = useState([new Date()]);
   const [events, setEvents] = useState([]);
 
   useEffect(() => {setPage('feed')}, []); // Updates the page state to 'feed' when the component mounts aka feed page loads)
 
-  const today = new Date();
+  const today = new Date(); // Holds today's date
 
   // Simulate fetching events from an API (you can swap with actual fetch later)
   useEffect(() => {
@@ -38,24 +30,22 @@ export default function FeedPage({page, setPage, user, setUser}) {
     };
 
     fetchEvents();
-    console.log('Selected Date:', selectedDate);
+    // console.log('Selected Date:', selectedDate);
     formattedDate = new Date(selectedDate)?.toLocaleDateString() || "No date selected"; 
   }, [selectedDate]);
 
+  // Function to compare event date with selected date, if event date is in selected date range, return true
   const dateCompare = (eventDate, selectedDate) => {
     return selectedDate.some(date => 
       new Date(date).toLocaleDateString() === new Date(eventDate).toLocaleDateString()
     );
   }
 
-  
+  // Formatted Date in String form for logging and possible use in UI later on
   let formattedDate = new Date(selectedDate[0])?.toLocaleDateString() || "No date selected"; 
 
+  // Holds events only in the selected date(s) range
   var curDateEvents = events.filter(event => dateCompare(event.date, selectedDate));
-  console.log("FEED PAGE RENDEERED");
-  console.log("Selected Date:", selectedDate);
-  console.log('formattedDate:', formattedDate);
-  console.log('curDateEvents:', curDateEvents);
 
   return (
     <>
@@ -66,7 +56,7 @@ export default function FeedPage({page, setPage, user, setUser}) {
         </div> */}
         <div className="flex-1 overflow-y-scroll mt-16 px-4 pb-6">
           <div className="flex flex-col gap-7 max-w-2xl mx-auto mt-[4vh]">
-            {/* Below only events under certain the selected dates (check each event.date)should be shown */}
+            {/* Below only events under certain selected dates are shown */}
             {curDateEvents.map((event) => (
               <EventBox key={event.id} event={event} setEvents={setEvents} allEvents={events} />
             ))}
