@@ -4,7 +4,7 @@ import PostModal from './PostModal';
 
 export default function EventBox({ allEvents, event, setEvents }) {
     const [modalOpen, setModalOpen] = useState(false);
-    console.log('event.posts:', event.posts);
+    // console.log('event.posts:', event.posts);
 
   return (
     <>

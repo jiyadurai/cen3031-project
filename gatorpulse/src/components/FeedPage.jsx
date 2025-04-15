@@ -17,7 +17,7 @@ export default function FeedPage({page, setPage, user, setUser}) {
   //   tag: ''
   // };
   
-  const [selectedDate, setSelectedDate] = useState(new Date());
+  const [selectedDate, setSelectedDate] = useState([new Date()]);
   const [events, setEvents] = useState([]);
 
   useEffect(() => {setPage('feed')}, []); // Updates the page state to 'feed' when the component mounts aka feed page loads)
@@ -36,19 +36,21 @@ export default function FeedPage({page, setPage, user, setUser}) {
     };
 
     fetchEvents();
+    console.log('Selected Date:', selectedDate);
+    formattedDate = new Date(selectedDate)?.toLocaleDateString() || "No date selected"; 
   }, [selectedDate]);
 
-  const formattedDate = selectedDate.toLocaleDateString();
+  
+  let formattedDate = new Date(selectedDate)?.toLocaleDateString() || "No date selected"; 
 
   return (
     <>
       <div className="min-h-screen bg-white flex flex-col">
         <Header page={page} selectedDate={selectedDate} setSelectedDate={setSelectedDate} />
-        <div className="text-center font-semibold text-lg mt-4 text-gray-800">
+        {/* <div className="text-center font-semibold text-lg mt-4 text-gray-800">
           Events for {formattedDate}
-        </div>
-
-        <div className="flex-1 overflow-y-scroll mt-4 px-4 pb-6">
+        </div> */}
+        <div className="flex-1 overflow-y-scroll mt-16 px-4 pb-6">
           <div className="flex flex-col gap-7 max-w-2xl mx-auto mt-[4vh]">
             {events.map((event) => (
               <EventBox key={event.id} event={event} setEvents={setEvents} allEvents={events} />
