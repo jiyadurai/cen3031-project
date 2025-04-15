@@ -49,7 +49,7 @@ export default function FeedPage({page, setPage, user, setUser}) {
         </div>
 
         <div className="flex-1 overflow-y-scroll mt-4 px-4 pb-6">
-          <div className="flex flex-col gap-4 max-w-2xl mx-auto">
+          <div className="flex flex-col gap-7 max-w-2xl mx-auto mt-[4vh]">
             {events.map((event) => (
               <EventBox key={event.id} event={event} setEvents={setEvents} allEvents={events} />
             ))}
