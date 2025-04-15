@@ -10,7 +10,17 @@ export default function EventBox({ allEvents, event, setEvents }) {
     <>
         <div key={event.id} onClick={() => setModalOpen(true)} className="card bg-base-100 shadow-md border border-gray-200 hover:shadow-lg transition-all cursor-pointer">
             <div className="card-body">
-                <h2 className="card-title text-xl">{event.title}</h2>
+                <div className="flex items-center justify-between mb-4">
+                    <h2 className="card-title text-xl">{event.title}</h2>
+                    <div className="flex flex-col items-center">
+                        <img
+                            src={event.User.ProfilePic}
+                            alt={event.User.Name}
+                            className="w-10 h-10 rounded-full object-cover"
+                            />
+                        <p className="text-md mt-[0.5vh] font-normal">{event.User.Name}</p>
+                    </div>
+                </div>
                 <p className="text-sm text-gray-600">{event.time}</p>
                 <div className="badge badge-secondary mt-2">{event.tag}</div>
             </div>
@@ -38,6 +48,10 @@ EventBox.propTypes = {
           Description: PropTypes.string.isRequired,
         })
       ).isRequired,
+    User: PropTypes.shape({
+      ProfilePic: PropTypes.string.isRequired,
+      Name: PropTypes.string.isRequired,
+    }).isRequired,
   }).isRequired,
   allEvents: PropTypes.arrayOf(
     PropTypes.shape({
