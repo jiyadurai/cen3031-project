@@ -104,6 +104,13 @@ def profile(targetuser):
     # target_user = database.getUser(target_user)
     # target_user = target_user.User(target_user)
     target_profile = database.getProfile(targetuser)
+    if target_profile == -1:
+        failure = jsonify(
+            {
+                "status": "failure"
+            }
+        )
+        return failure
     
     data_dict = target_profile.to_dict()
 
@@ -124,15 +131,19 @@ def profile(targetuser):
 @app.route("/makePost", methods=['POST'])
 def make_post():
     data = request.get_json()
+    print(data)
     candidates = gmaps.find_place(input=data.get("location"), input_type="textquery", fields=['place_id']).get('candidates')
     loc = candidates[0] if candidates else ""
     posts.add(
         {
             "username": data.get("username"),
+            "title": data.get("title"),
             "description": data.get("description"),
-            "date": data.get("date"),
+            "date": data.get("selectedDate"),
             "image": data.get("image"),
             "location": loc,
+            "likes": 0,
+            "timeOfPost": data.get("timeOfPost")
         }
     )
     return jsonify({"message": "successfully posted"})

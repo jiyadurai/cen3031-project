@@ -15,10 +15,12 @@ export default function MakePostModal({ makingPost, toggleMakePostModalOff }) {
 //       }, []);
 //   }
 
+  const [ title, setTitle ] = useState("");
   const [ description, setDescription ] = useState("");
   const [ image, setImage ] = useState("");
   const [ location, setLocation ] = useState("");
   const [ selectedDate, setSelectedDate ] = useState([new Date()]);
+  
   
 
   const handleSubmit = async (e) => {
@@ -77,9 +79,22 @@ export default function MakePostModal({ makingPost, toggleMakePostModalOff }) {
               <h2 className="text-xl font-semibold mb-4">Make a Post</h2>
               {/* Form inside modal */}
               <form onSubmit={handleSubmit}>
+              <div className="mb-4">
+                  <label htmlFor="title" className="block text-sm font-medium text-gray-700">
+                    Event Title
+                  </label>
+                  <input
+                    type="text"
+                    id="title"
+                    name="title"
+                    placeholder="Title the event"
+                    className="input input-bordered w-full mt-2"
+                    onChange={(e) => setTitle(e.target.value)}
+                  />
+                </div>
                 <div className="mb-4">
                   <label htmlFor="description" className="block text-sm font-medium text-gray-700">
-                    Description
+                    Event Description
                   </label>
                   <input
                     type="text"
