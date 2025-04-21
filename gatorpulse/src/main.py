@@ -148,6 +148,39 @@ def make_post():
     )
     return jsonify({"message": "successfully posted"})
 
+@app.route("/editProfile", methods=["POST"])
+def edit_profile():
+    data = request.get_json()
+    # print(data.get("username"), data.get("password"), data.get("email"))
+    print(data)
+
+    profile_query = profs.where(
+        filter=FieldFilter("username", "==", data.get("username"))
+    ).get()
+
+    if not profile_query:
+        print("update failure")
+        return jsonify({"message": "edit failure!"})
+    
+    profile_to_update = profile_query[0]
+    prof_ref = profs.document(profile_to_update.id)
+    prof_ref.update({
+        "displayname": data.get("displayName"),
+        "biography": data.get("biography"),
+        "pfp": data.get("image")
+    })
+    
+    # profs.add(
+    #     {
+    #         "username": data.get("username"),
+    #         "displayname": data.get("username"),
+    #         "biography": "Write something about yourself",
+    #         "pfp": "none"
+    #     }
+    # )
+    print("update success")
+    return jsonify({"message": "update success!"})
+
 @app.route("/images/<filename>", methods=["GET"])
 def get_images(filename):
     return send_from_directory(directory='assets', path=filename)

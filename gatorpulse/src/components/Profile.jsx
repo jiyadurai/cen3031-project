@@ -4,6 +4,7 @@ import Header from './Header'
 import {useParams} from 'react-router-dom' 
 import { useUser } from './UserContext'
 import MakePostModal from './MakePost';
+import ProfileEditorModal from './ProfileEditor';
 
 export default function Profile({page, setPage}) {
 //   const [isFollowing, setIsFollowing] = useState(false);
@@ -61,11 +62,12 @@ export default function Profile({page, setPage}) {
         <section className="min-h-screen bg-white pt-[8vh] p-6">
         <Header page={page} selectedDate={null} setSelectedDate={null} user={user}></Header>
         {makingPost && <MakePostModal makingPost={makingPost} toggleMakePostModalOff={toggleMakePostModalOff}></MakePostModal>}
-        {}
+        {editingProfile && <ProfileEditorModal makingEdits={editingProfile} toggleEditing={toggleEditingProfileOff}></ProfileEditorModal>}
           <div className="bg-white rounded-2xl shadow-xl p-6 max-w-md w-full mx-auto">
             {userInfo ? (
+              //If the user has been found
               <>
-                {/* If the user has been found */}
+                
                 <img
                   src={userInfo.pfp_url}
                   alt="Profile Picture"
@@ -79,13 +81,14 @@ export default function Profile({page, setPage}) {
               </>
               
               ) : !userNotFound ? 
-                {/* If the user has not been found YET */}
+                
               (
+                //If the user has not been found YET
                 <p className="text-gray-500 text-center">Loading profile...</p>
               )
                 :
-                {/* If the user has failed to be found */}
               (
+                //If the user has failed to be found
                 <p className="text-gray-500 text-center">User not found.</p>
               )
             }
