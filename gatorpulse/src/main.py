@@ -136,6 +136,7 @@ def create_post():
     db.collection("posts").add(post.to_dict())
 
     return jsonify({"message": "success"})
+
 # For testing profile settings
 @app.route("/profile", methods=["POST", "GET"])
 def profile():

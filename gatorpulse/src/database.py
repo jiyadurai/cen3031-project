@@ -2,7 +2,7 @@ import firebase_admin
 from firebase_admin import credentials, firestore
 from google.cloud.firestore_v1 import FieldFilter
 
-cred = credentials.Certificate("./gatorpulse/servicekey.json")
+cred = credentials.Certificate("./servicekey.json")
 firebase_admin.initialize_app(cred)
 db = firestore.client()
 ref = db.collection("users")
