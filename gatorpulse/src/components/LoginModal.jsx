@@ -2,17 +2,21 @@
 import { useState } from 'react'
 import { useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
+import { useUser } from './UserContext';
 
-export default function LoginModal({setUser, OpenLoginModal, toggleModalOff }) {
+export default function LoginModal({OpenLoginModal, toggleModalOff }) {
     const [password, setPassword] = useState("");
     const [username, setUsername] = useState("");
+    const [loginFailure, setLoginFailure] = useState(null);
     const navigate = useNavigate();
+    const { setUser } = useUser();
 
     const AuthForm = () => {
       useEffect(() => {
         console.log("Login Modal rendered");
       }, []);
   }
+
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -36,9 +40,17 @@ export default function LoginModal({setUser, OpenLoginModal, toggleModalOff }) {
 
     const result = await response.json()
     // IF login is successful, redirect to feed page (Add logic to check if login is successful HERE)
-    console.log(result) // Handle the response
-    setUser(result); // Set the user state to the result from the server (NEEDS TO BE UDATED TO THE USER OBJECT)
-    navigate('/feed');
+    console.log(result.message) // Handle the response
+    if (result.message == "login success!") {
+      setUser(username); // Set the user state to the result from the server (NEEDS TO BE UDATED TO THE USER OBJECT)
+      console.log("set user to " + username);
+      setUsername(username);
+      navigate(`/profile/${username}`);
+      setLoginFailure(null);
+    }
+    else {
+      setLoginFailure('Username or password is incorrect');
+    }
   }
 
 
@@ -81,6 +93,13 @@ export default function LoginModal({setUser, OpenLoginModal, toggleModalOff }) {
                     onChange={(e) => setPassword(e.target.value)}
                   />
                 </div>
+                {
+                  loginFailure && (
+                    <div className="inline-block text-red-500 bg-red-100 border border-red-300 rounded p-2 mb-4">
+                      {loginFailure}
+                    </div>
+                  )
+                }
                 <div className="modal-action">
                   <button
                     type="button"
