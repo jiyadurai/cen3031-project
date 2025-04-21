@@ -18,16 +18,16 @@ app = Flask(__name__)
 # Apply CORS to all routes with the correct origin
 cors = CORS(
     app,
-    # resources={r"*": {"origins": "http://localhost:5173/*"}},
-    origins=["http://localhost:5173", "http://localhost:5173/profile", "http://localhost:5173/makePost"],
+    resources={r"*": {"origins": "http://localhost:5173"}},
+    #origins=["http://localhost:5173", "http://localhost:5173/profile", "http://localhost:5173/makePost"],
     supports_credentials=True
 )
 
 # Initialize Firebase
 # cred = credentials.Certificate("../servicekey.json")
 # firebase_admin.initialize_app(cred)
-load_dotenv()
-api_key = os.environ.get("GOOGLE-API")
+load_dotenv(dotenv_path='./gatorpulse/.env')
+api_key = os.environ.get("GOOGLE_API")
 gmaps = googlemaps.Client(key=api_key)
 
 db = firestore.client()
@@ -36,11 +36,6 @@ profs = db.collection("profiles")
 posts = db.collection("posts")
 
 default_pfp = "./assets/blank-pfp.png"
-
-default_pfp = "./assets/blank-pfp.png"
-
-default_pfp = "./assets/blank-pfp.png"
-
 
 @app.route("/")
 def home():
@@ -101,27 +96,6 @@ def signup():
         )
         return jsonify({"message": "signup success!"})
     
-@app.route("/login", methods=["POST"])
-def login():
-    data = request.get_json()
-
-    usernameCheck = ref.where(
-        filter=FieldFilter("username", "==", data.get("username"))
-    ).get()
-    passCheck = ref.where(
-        filter=FieldFilter("username", "==", data.get("username"))
-    ).get()
-
-    if len(usernameCheck) == 0:
-        print("Username doesn't exist!")
-        return jsonify({"message": "failure!"})
-    else:
-        passcode = passCheck[0].to_dict().get("password")
-        if data.get("password") != passcode:
-            print("Password doesn't match!")
-            return jsonify({"message": "login failure!"})
-        print("Logging in...")
-        return jsonify({"message": "login success!"})
 
 # For testing profile settings
 @app.route("/profile/<targetuser>", methods=["POST", "GET"])
@@ -224,27 +198,27 @@ def create_post():
 
     return jsonify({"message": "success"})
 
-# For testing profile settings
-@app.route("/profile", methods=["POST", "GET"])
-def profile():
-    testUser = database.getUser("AdamApple")
-    testUser = user.User(testUser)
-    image_url = url_for('get_images', filename="blank-pfp.png")
-    if testUser.getPfp() != "none":
-        image_url = testUser.getPfp()
-
-    testUser.updateBio("Hello! My name is Adam Apple!")
-
-    return f"""
-    <html>
-        <head><title>{testUser.getUsername()}'s Profile</title></head>
-        <body>
-            <h1>{testUser.getUsername()}</h1>
-            <p>{testUser.getBio()}</p>
-            <img src={image_url} alt="Profile Picture" style="max-width:300px;" />
-        </body>
-    </html>
-    """
+# # For testing profile settings
+# @app.route("/profile", methods=["POST", "GET"])
+# def profile():
+#     testUser = database.getUser("AdamApple")
+#     testUser = user.User(testUser)
+#     image_url = url_for('get_images', filename="blank-pfp.png")
+#     if testUser.getPfp() != "none":
+#         image_url = testUser.getPfp()
+#
+#     testUser.updateBio("Hello! My name is Adam Apple!")
+#
+#     return f"""
+#     <html>
+#         <head><title>{testUser.getUsername()}'s Profile</title></head>
+#         <body>
+#             <h1>{testUser.getUsername()}</h1>
+#             <p>{testUser.getBio()}</p>
+#             <img src={image_url} alt="Profile Picture" style="max-width:300px;" />
+#         </body>
+#     </html>
+#     """
 
 if __name__ == "__main__":
     app.run(debug=True, port=5000)
