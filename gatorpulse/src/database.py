@@ -8,6 +8,7 @@ db = firestore.client()
 ref = db.collection("users")
 profs = db.collection("profiles")
 
+
 # Get the document object for a user given the username.
 def getUser(username):
     user = ref.where(filter=FieldFilter("username", "==", username)).get()

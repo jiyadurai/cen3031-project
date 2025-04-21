@@ -8,7 +8,10 @@ import user, database
 import googlemaps
 from dotenv import load_dotenv
 import os
-
+from firebase_admin import credentials
+from firebase_admin import firestore
+from datetime import datetime
+from flask import render_template, redirect, url_for, session
 
 app = Flask(__name__)
 
@@ -31,6 +34,8 @@ db = firestore.client()
 ref = db.collection("users")
 profs = db.collection("profiles")
 posts = db.collection("posts")
+
+default_pfp = "./assets/blank-pfp.png"
 
 default_pfp = "./assets/blank-pfp.png"
 
@@ -75,7 +80,6 @@ def signup():
 
     if len(usernameCheck) > 0:
         return jsonify({"message": "signup failure!"})
-        return jsonify({"message": "signup failure!"})
     else:
         ref.add(
             {
@@ -84,8 +88,6 @@ def signup():
                 "username": data.get("username"),
                 "password": data.get("password"),
                 "biography": "Write about yourself here!",
-                "pfp": "none"
-                "biography": data.get("biography"),
                 "pfp": "none"
             }
         )
@@ -120,10 +122,6 @@ def login():
             return jsonify({"message": "login failure!"})
         print("Logging in...")
         return jsonify({"message": "login success!"})
-    
-@app.route("/images/<filename>", methods=["GET"])
-def get_images(filename):
-    return send_from_directory(directory='assets', path=filename)
 
 # For testing profile settings
 @app.route("/profile/<targetuser>", methods=["POST", "GET"])
@@ -164,7 +162,6 @@ def make_post():
         }
     )
     return jsonify({"message": "successfully posted"})
-
 
 @app.route("/images/<filename>", methods=["GET"])
 def get_images(filename):
