@@ -104,6 +104,13 @@ def profile(targetuser):
     # target_user = database.getUser(target_user)
     # target_user = target_user.User(target_user)
     target_profile = database.getProfile(targetuser)
+    if target_profile == -1:
+        failure = jsonify(
+            {
+                "status": "failure"
+            }
+        )
+        return failure
     
     data_dict = target_profile.to_dict()
 
@@ -124,18 +131,55 @@ def profile(targetuser):
 @app.route("/makePost", methods=['POST'])
 def make_post():
     data = request.get_json()
+    print(data)
     candidates = gmaps.find_place(input=data.get("location"), input_type="textquery", fields=['place_id']).get('candidates')
     loc = candidates[0] if candidates else ""
     posts.add(
         {
             "username": data.get("username"),
+            "title": data.get("title"),
             "description": data.get("description"),
-            "date": data.get("date"),
+            "date": data.get("selectedDate"),
             "image": data.get("image"),
             "location": loc,
+            "likes": 0,
+            "timeOfPost": data.get("timeOfPost")
         }
     )
     return jsonify({"message": "successfully posted"})
+
+@app.route("/editProfile", methods=["POST"])
+def edit_profile():
+    data = request.get_json()
+    # print(data.get("username"), data.get("password"), data.get("email"))
+    print(data)
+
+    profile_query = profs.where(
+        filter=FieldFilter("username", "==", data.get("username"))
+    ).get()
+
+    if not profile_query:
+        print("update failure")
+        return jsonify({"message": "edit failure!"})
+    
+    profile_to_update = profile_query[0]
+    prof_ref = profs.document(profile_to_update.id)
+    prof_ref.update({
+        "displayname": data.get("displayName"),
+        "biography": data.get("biography"),
+        "pfp": data.get("image")
+    })
+    
+    # profs.add(
+    #     {
+    #         "username": data.get("username"),
+    #         "displayname": data.get("username"),
+    #         "biography": "Write something about yourself",
+    #         "pfp": "none"
+    #     }
+    # )
+    print("update success")
+    return jsonify({"message": "update success!"})
 
 @app.route("/images/<filename>", methods=["GET"])
 def get_images(filename):
