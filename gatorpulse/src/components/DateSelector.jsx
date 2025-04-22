@@ -1,9 +1,11 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { DayPicker } from 'react-day-picker';
 import 'react-day-picker/dist/style.css';
 
 export default function DateSelector({ selectedDate, setSelectedDate }) {
   const [isOpen, setIsOpen] = useState(false);
+  const [dropLeft, setDropLeft] = useState(false);
+  const buttonRef = useRef();
 
   const handleSelect = (date) => {
     // If no date is selected, set selectedDate to an empty array
@@ -25,11 +27,20 @@ export default function DateSelector({ selectedDate, setSelectedDate }) {
     })
     .join(', ');
   }
-  
+
+  // Determine dropdown direction
+  useEffect(() => {
+    if (isOpen && buttonRef.current) {
+      const rect = buttonRef.current.getBoundingClientRect();
+      const spaceRight = window.innerWidth - rect.right;
+      setDropLeft(spaceRight < 250); // If not enough space on the right, drop to the left
+    }
+  }, [isOpen]);
 
   return (
     <div className="relative inline-block">
       <button
+        ref={buttonRef}
         className="btn btn-sm btn-outline rounded-full px-4"
         onClick={() => setIsOpen(!isOpen)}
       >
@@ -37,7 +48,11 @@ export default function DateSelector({ selectedDate, setSelectedDate }) {
       </button>
 
       {isOpen && (
-        <div className="absolute mt-2 ml-[-13rem] z-50 bg-white border rounded-xl shadow-lg p-4">
+        <div
+          className={`absolute mt-2 z-50 bg-white border rounded-xl shadow-lg p-4 ${
+            dropLeft ? 'right-0' : 'left-0'
+          }`}
+        >
           <DayPicker
             mode="multiple" // Change to 'single' if you only want one
             selected={selectedDate} // Currently selected date MUST be an array of DATE object even if it only holds one
@@ -48,4 +63,3 @@ export default function DateSelector({ selectedDate, setSelectedDate }) {
     </div>
   );
 }
-

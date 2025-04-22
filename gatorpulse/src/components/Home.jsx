@@ -19,13 +19,14 @@ export default function Home({page, setPage, user, setUser}) {
         setSignUpVisibility(false);
     }
 
-    useEffect(() => {setPage('home')
+    useEffect(() => {
+        setPage('home')
         console.log(page + " page rendered");
     }, [])
 
   return (
     <section className={`bg-cover bg-center h-[100vh] w-[100%] absolute`}  style={{ backgroundImage: `url(${HomeScreen})` }}>
-        <Header page={page} user={user}></Header>
+        <Header page={page} user={user} selectedDate={null} setSelectedDate={null}></Header>
         {OpenLoginModal && <LoginModal setUser={setUser} OpenLoginModal={OpenLoginModal} toggleModalOff={toggleLoginModalOff}></LoginModal>}
         {OpenSignUpModal && <SignUpModal OpenSignUpModal={OpenSignUpModal} toggleModalOff={toggleSignUpModalOff}></SignUpModal>}
         <div className="flex flex-col items-center justify-center w-[100%] h-[100vh]">

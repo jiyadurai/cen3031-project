@@ -20,6 +20,8 @@ export default function MakePostModal({ makingPost, toggleMakePostModalOff }) {
   const [ image, setImage ] = useState("");
   const [ location, setLocation ] = useState("");
   const [ selectedDate, setSelectedDate ] = useState([new Date()]);
+  const [ tag, setTag ] = useState("");
+  const [ time, setTime ] = useState("");
   
   
 
@@ -37,7 +39,9 @@ export default function MakePostModal({ makingPost, toggleMakePostModalOff }) {
       image,
       location,
       timeOfPost,
-      title
+      title,
+      tag,
+      time
     };
     
     
@@ -105,6 +109,32 @@ export default function MakePostModal({ makingPost, toggleMakePostModalOff }) {
                     placeholder="Describe the event"
                     className="input input-bordered w-full mt-2"
                     onChange={(e) => setDescription(e.target.value)}
+                  />
+                </div>
+                <div className="mb-4">
+                  <label htmlFor="tag" className="block text-sm font-medium text-gray-700">
+                    Tag
+                  </label>
+                  <input
+                    type="text"
+                    id="tag"
+                    name="tag"
+                    placeholder="Tag for your event"
+                    className="input input-bordered w-full mt-2"
+                    onChange={(e) => setTag(e.target.value)}
+                  />
+                </div>
+                <div className="mb-4">
+                  <label htmlFor="time" className="block text-sm font-medium text-gray-700">
+                    Time
+                  </label>
+                  <input
+                    type="text"
+                    id="time"
+                    name="time"
+                    placeholder="Event time"
+                    className="input input-bordered w-full mt-2"
+                    onChange={(e) => setTime(e.target.value)}
                   />
                 </div>
                 <div className="mb-4">
