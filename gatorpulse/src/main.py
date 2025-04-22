@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, url_for, send_from_directory
+from flask import Flask, request, jsonify, url_for, send_from_directory, session
 from flask_cors import CORS
 from flask_cors import cross_origin
 import firebase_admin
@@ -37,6 +37,46 @@ posts = db.collection("posts")
 
 default_pfp = "./assets/blank-pfp.png"
 
+class Post:
+    def __init__(self, id, username, media_type, url, title, description, likes=0, createdAt=None):
+        self.id = id
+        self.username = username
+        self.media_type = media_type
+        self.url = url
+        self.title = title
+        self.description = description
+        self.likes = likes
+        self.createdAt = createdAt or firestore.SERVER_TIMESTAMP
+        self.likeUsers = []
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "username": self.username,
+            "media_type": self.media_type,
+            "url": self.url,
+            "title": self.title,
+            "description": self.description,
+            "likes": self.likes,
+            "createdAt": self.createdAt,
+            "likeUsers": self.likeUsers
+        }
+
+    @staticmethod
+    def from_firestore(doc):
+        data = doc.to_dict()
+        return Post(
+            username = data.get("username"),
+            id = data.get("id"),
+            media_type = data.get("media_type"),
+            url = data.get("url"),
+            title = data.get("title"),
+            description = data.get("description"),
+            likes = data.get("likes"),
+            createdAt = data.get("createdAt")
+        )
+
+
 @app.route("/")
 def home():
     return "Server is up and running!"
@@ -61,7 +101,20 @@ def login():
             print("Password doesn't match!")
             return jsonify({"message": "login failure!"})
         print("Logging in...")
-        return jsonify({"message": "login success!"})
+        session['user'] = {'username' : data.get("username")}
+        return jsonify({"message": "login success!"}), 200
+
+@app.route("/logout", methods=["POST"])
+def logout():
+    session.clear()
+    return jsonify({"message": "logout success!"}), 200
+
+@app.route("/getUser", methods=["POST"])
+def getUser():
+    user = session.get('user')
+    if not user:
+        return jsonify({"message": "failure!"}), 401
+    return jsonify({'user': user}), 200
 
 @app.route("/signup", methods=["POST"])
 def signup():
@@ -94,7 +147,7 @@ def signup():
                 "pfp": "none"
             }
         )
-        return jsonify({"message": "signup success!"})
+        return jsonify({"message": "signup success!"}), 200
     
 
 # For testing profile settings
@@ -180,49 +233,13 @@ def edit_profile():
     #         "pfp": "none"
     #     }
     # )
+
     print("update success")
     return jsonify({"message": "update success!"})
 
 @app.route("/images/<filename>", methods=["GET"])
 def get_images(filename):
     return send_from_directory(directory='assets', path=filename)
-
-class Post:
-    def __init__(self, id, username, media_type, url, title, description, likes=0, createdAt=None):
-        self.id = id
-        self.username = username
-        self.media_type = media_type
-        self.url = url
-        self.title = title
-        self.description = description
-        self.likes = likes
-        self.createdAt = createdAt or firestore.SERVER_TIMESTAMP
-
-    def to_dict(self):
-        return {
-            "id": self.id,
-            "username": self.username,
-            "media_type": self.media_type,
-            "url": self.url,
-            "title": self.title,
-            "description": self.description,
-            "likes": self.likes,
-            "createdAt": self.createdAt
-        }
-
-    @staticmethod
-    def from_firestore(doc):
-        data = doc.to_dict()
-        return Post(
-            username = data.get("username"),
-            id = data.get("id"),
-            media_type = data.get("media_type"),
-            url = data.get("url"),
-            title = data.get("title"),
-            description = data.get("description"),
-            likes = data.get("likes"),
-            createdAt = data.get("createdAt")
-        )
 
 @app.route('/create_post', methods=['POST'])
 def create_post():
@@ -276,27 +293,29 @@ def get_all_posts():
         'profiles': allProfiles
     })
 
-# # For testing profile settings
-# @app.route("/profile", methods=["POST", "GET"])
-# def profile():
-#     testUser = database.getUser("AdamApple")
-#     testUser = user.User(testUser)
-#     image_url = url_for('get_images', filename="blank-pfp.png")
-#     if testUser.getPfp() != "none":
-#         image_url = testUser.getPfp()
-#
-#     testUser.updateBio("Hello! My name is Adam Apple!")
-#
-#     return f"""
-#     <html>
-#         <head><title>{testUser.getUsername()}'s Profile</title></head>
-#         <body>
-#             <h1>{testUser.getUsername()}</h1>
-#             <p>{testUser.getBio()}</p>
-#             <img src={image_url} alt="Profile Picture" style="max-width:300px;" />
-#         </body>
-#     </html>
-#     """
+@app.route('/maps', methods=['GET'])
+def maps():
+    gainesville_coords = (29.6516, -82.3248)
+    address = input("Enter an Address: ")
+    res = gmaps.find_place(input=address,
+                           input_type='textquery',
+                           fields=['place_id'],
+                           location_bias=f'circle:12000@{gainesville_coords[0]},{gainesville_coords[1]}')
+    candidates = res.get('candidates')
+
+    if candidates:
+        place_id = candidates[0].get('place_id')
+        res = gmaps.place(place_id=place_id, fields=['name', 'formatted_address'])
+        place_name = res.get('result').get('name')
+        formatted_address = res.get('result').get('formatted_address')
+
+        if "Gainesville" not in formatted_address:
+            return jsonify({"message": "No places found in Gainesville!"})
+
+        return jsonify({"ID": place_id, "Name": place_name, "Address": formatted_address})
+    else:
+        return jsonify({"message": "No places found"})
+
 
 if __name__ == "__main__":
     app.run(debug=True, port=5000)
