@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, url_for, send_from_directory
+from flask import Flask, request, jsonify, url_for, send_from_directory, session
 from flask_cors import CORS
 from flask_cors import cross_origin
 import firebase_admin
@@ -101,7 +101,20 @@ def login():
             print("Password doesn't match!")
             return jsonify({"message": "login failure!"})
         print("Logging in...")
-        return jsonify({"message": "login success!"})
+        session['user'] = {'username' : data.get("username")}
+        return jsonify({"message": "login success!"}), 200
+
+@app.route("/logout", methods=["POST"])
+def logout():
+    session.clear()
+    return jsonify({"message": "logout success!"}), 200
+
+@app.route("/getUser", methods=["POST"])
+def getUser():
+    user = session.get('user')
+    if not user:
+        return jsonify({"message": "failure!"}), 401
+    return jsonify({'user': user}), 200
 
 @app.route("/signup", methods=["POST"])
 def signup():
@@ -134,7 +147,7 @@ def signup():
                 "pfp": "none"
             }
         )
-        return jsonify({"message": "signup success!"})
+        return jsonify({"message": "signup success!"}), 200
     
 
 # For testing profile settings
