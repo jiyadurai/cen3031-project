@@ -60,7 +60,7 @@ export default function Profile({page, setPage}) {
 
     return (
         <section className="min-h-screen bg-white pt-[8vh] p-6">
-        <Header page={page} selectedDate={null} setSelectedDate={null} user={user}></Header>
+        <Header page={page} selectedDate={null} setSelectedDate={null}></Header>
         {makingPost && <MakePostModal makingPost={makingPost} toggleMakePostModalOff={toggleMakePostModalOff}></MakePostModal>}
         {editingProfile && <ProfileEditorModal makingEdits={editingProfile} toggleEditing={toggleEditingProfileOff}></ProfileEditorModal>}
           <div className="bg-white rounded-2xl shadow-xl p-6 max-w-md w-full mx-auto">

@@ -143,7 +143,9 @@ def make_post():
             "image": data.get("image"),
             "location": loc,
             "likes": 0,
-            "timeOfPost": data.get("timeOfPost")
+            "timeOfPost": data.get("timeOfPost"),
+            "tag": data.get("tag"),
+            "time": data.get("time")
         }
     )
     return jsonify({"message": "successfully posted"})
@@ -241,6 +243,38 @@ def create_post():
     db.collection("posts").add(post.to_dict())
 
     return jsonify({"message": "success"})
+
+@app.route('/getAllPostsAndProfiles', methods=['POST'])
+def get_all_posts():
+    result = {}
+    allPosts = {}
+    for post in posts.get():
+        allPosts[post.id] = {
+            'id': post.id,
+            'username': post.get('username'),
+            'title': post.get('title'),
+            'description': post.get('description'),
+            'image': post.get('image'),
+            'location': post.get('location'),
+            'date': post.get('date'),
+            'timeOfPost': post.get('timeOfPost'),
+            'likes': post.get('likes'),
+            'tag': post.get('tag'),
+            'time': post.get('time')
+        }
+    allProfiles = {}
+    for profile in profs.get():
+        print(profile.get('username'))
+        allProfiles[profile.get('username')] = {
+            'username': profile.get('username'),
+            'displayname': profile.get('displayname'),
+            'biography': profile.get('biography'),
+            'pfp': profile.get('pfp')
+        }
+    return jsonify({
+        'posts': allPosts,
+        'profiles': allProfiles
+    })
 
 # # For testing profile settings
 # @app.route("/profile", methods=["POST", "GET"])

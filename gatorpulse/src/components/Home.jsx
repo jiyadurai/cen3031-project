@@ -19,7 +19,8 @@ export default function Home({page, setPage, user, setUser}) {
         setSignUpVisibility(false);
     }
 
-    useEffect(() => {setPage('home')
+    useEffect(() => {
+        setPage('home')
         console.log(page + " page rendered");
     }, [])
 

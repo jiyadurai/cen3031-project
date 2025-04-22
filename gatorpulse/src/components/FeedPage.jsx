@@ -3,7 +3,7 @@ import Header from './Header'
 import EventBox from './EventBox';
 import PropTypes from 'prop-types';
 
-export default function FeedPage({page, setPage, user, setUser}) {
+export default function FeedPage({page, setPage}) {
   // On load the feed page will go into the selectedDate state (can be one day or range of dates) and then go into the backend and have a request for data for that specifc date.
   // It will then feed this information into the event box and post components.
   // The event box will be a list of events that are happening on that date.
@@ -26,7 +26,31 @@ export default function FeedPage({page, setPage, user, setUser}) {
         { id: '3', User: {Name: 'Beaty Green', ProfilePic: 'https://i.pravatar.cc/150?img=32'}, date: today, title: 'Trivia Night', time: '7:00 PM', tag: '#fun', posts: [{id: '7', User: {Name: 'Lacy Hunters', ProfilePic: 'https://i.pravatar.cc/150?img=32'}, Likes: 0, Title: 'First Gator Pulse meetup 🐊💬', Description: 'Come chill, meet new people, and vibe with us 🎶', Picture: 'https://picsum.photos/800/600'}]},
         // Add more to test scrolling
       ];
-      setEvents(fakeEvents);
+      const response = await fetch("http://localhost:5000/getAllPostsAndProfiles", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        }
+      });
+      const data = await response.json();
+      const postData = data.posts;
+      const postDataValues = Object.values(postData);
+      const profileData = data.profiles;
+      const allEvents = [];
+      // console.log("profileData: ", profileData);
+      // console.log("profileData.newman:", profileData.newman);
+      // console.log("profileData['newman']", profileData['newman']);
+      // console.log(postDataValues);
+      postDataValues.forEach(post => {
+        const usr = post.username;
+        // console.log(usr);
+        const cur = profileData[usr];
+        console.log("cur is: ", cur);
+        allEvents.push({ id: post.id, User: {Name: cur.displayname, ProfilePic: cur.pfp}, date: post.date, title: post.title, time: post.time, tag: post.tag, posts: [{id: post.id, User: {Name: cur.displayname, ProfilePic: cur.pfp}, Likes: post.likes, Title: post.title, Description: post.description, Picture: post.image}]})
+      })
+      console.log(allEvents.length);
+
+      setEvents(allEvents);
     };
 
     fetchEvents();
