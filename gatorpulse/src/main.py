@@ -28,6 +28,7 @@ cors = CORS(
 # firebase_admin.initialize_app(cred)
 load_dotenv(dotenv_path='./gatorpulse/.env')
 api_key = os.environ.get("GOOGLE_API")
+app.secret_key = os.environ.get("FLASK_SECRET")
 gmaps = googlemaps.Client(key=api_key)
 
 db = firestore.client()

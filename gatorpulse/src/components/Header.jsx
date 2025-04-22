@@ -20,10 +20,14 @@ export default function Header({page, selectedDate, setSelectedDate}) {
       <Link to={`/profile/${user}`}>
         <div className="text-black font-bold text-lg">Profile</div>
       </Link>
+      <Link to={`/feed`}>
+        <div className="text-black font-bold text-lg">Feed</div>
+      </Link>
     </div>
 
     {/* Right: Date Selector (if not on home page) */}
-    {page == 'feed' && (
+    {console.log(selectedDate)}
+    {page == 'feed' && selectedDate !== null && (
       <div className="flex items-center">
         <DateSelector selectedDate={selectedDate} setSelectedDate={setSelectedDate} />
       </div>
@@ -34,6 +38,6 @@ export default function Header({page, selectedDate, setSelectedDate}) {
 
 Header.propTypes = {
   page: PropTypes.string.isRequired,
-  selectedDate: PropTypes.string.isRequired,
-  setSelectedDate: PropTypes.func.isRequired,
+  selectedDate: PropTypes.string,
+  setSelectedDate: PropTypes.func,
 };
