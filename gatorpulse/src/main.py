@@ -102,14 +102,13 @@ def login():
     ).get()
 
     if len(usernameCheck) == 0:
-        print("Username doesn't exist!")
+        # print("Username doesn't exist!")
         return jsonify({"message": "failure!"})
     else:
         passcode = passCheck[0].to_dict().get("password")
         if data.get("password") != passcode:
-            print("Password doesn't match!")
+            # print("Password doesn't match!")
             return jsonify({"message": "login failure!"})
-        print("Logging in...")
         # login successful, store user in session
         session['user'] = {'username' : data.get("username")}
         return jsonify({"message": "login success!"}), 200
@@ -132,7 +131,7 @@ def getUser():
 @app.route("/signup", methods=["POST"])
 def signup():
     data = request.get_json()
-    print(data.get("username"), data.get("password"), data.get("email"))
+    # print(data.get("username"), data.get("password"), data.get("email"))
 
     # check for existing user or email
     usernameCheck = ref.where(
@@ -168,7 +167,7 @@ def signup():
 # View user profile. For testing profile settings
 @app.route("/profile/<targetuser>", methods=["POST", "GET"])
 def profile(targetuser):
-    print(f"Got request from {targetuser}")
+    # print(f"Got request from {targetuser}")
     # target_user = database.getUser(target_user)
     # target_user = target_user.User(target_user)
     target_profile = database.getProfile(targetuser)
@@ -198,7 +197,7 @@ def profile(targetuser):
 @app.route("/makePost", methods=['POST'])
 def make_post():
     data = request.get_json()
-    print(data)
+    # print(data)
     candidates = gmaps.find_place(input=data.get("location"), input_type="textquery", fields=['place_id']).get('candidates')
     loc = candidates[0] if candidates else ""
 
@@ -223,14 +222,12 @@ def make_post():
 @app.route("/editProfile", methods=["POST"])
 def edit_profile():
     data = request.get_json()
-    print(data)
-
     profile_query = profs.where(
         filter=FieldFilter("username", "==", data.get("username"))
     ).get()
 
     if not profile_query:
-        print("update failure")
+        # print("update failure")
         return jsonify({"message": "edit failure!"})
 
     # update profile fields
@@ -251,7 +248,7 @@ def edit_profile():
     #     }
     # )
 
-    print("update success")
+    # print("update success")
     return jsonify({"message": "update success!"})
 
 # serve profile images
@@ -306,7 +303,7 @@ def get_all_posts():
     # gets all profiles
     allProfiles = {}
     for profile in profs.get():
-        print(profile.get('username'))
+        # print(profile.get('username'))
         allProfiles[profile.get('username')] = {
             'username': profile.get('username'),
             'displayname': profile.get('displayname'),

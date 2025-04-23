@@ -13,16 +13,16 @@ export default function LoginModal({OpenLoginModal, toggleModalOff }) {
 
     const AuthForm = () => {
       useEffect(() => {
-        console.log("Login Modal rendered");
+        // console.log("Login Modal rendered");
       }, []);
   }
 
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    console.log("handleSubmit Login called");
-    console.log("username: " + username);
-    console.log("password: " + password);
+    // console.log("handleSubmit Login called");
+    // console.log("username: " + username);
+    // console.log("password: " + password);
 
     const userData = {
       password,
@@ -40,10 +40,10 @@ export default function LoginModal({OpenLoginModal, toggleModalOff }) {
 
     const result = await response.json()
     // IF login is successful, redirect to feed page (Add logic to check if login is successful HERE)
-    console.log(result.message) // Handle the response
+    // console.log(result.message) // Handle the response
     if (result.message == "login success!") {
       setUser(username); // Set the user state to the result from the server (NEEDS TO BE UDATED TO THE USER OBJECT)
-      console.log("set user to " + username);
+      // console.log("set user to " + username);
       setUsername(username);
       navigate(`/profile/${username}`);
       setLoginFailure(null);

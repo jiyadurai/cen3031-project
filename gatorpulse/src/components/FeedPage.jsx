@@ -20,12 +20,12 @@ export default function FeedPage({page, setPage}) {
   useEffect(() => {
     const fetchEvents = async () => {
       // Replace this with actual API logic
-      const fakeEvents = [
-        { id: '1', User: {Name: 'Lacy Hunters', ProfilePic: 'https://i.pravatar.cc/150?img=32'}, date: today, title: 'Yoga on the Lawn', time: '9:00 AM', tag: '#wellness', posts: [{id: '1', User: {Name: 'Lacy Hunters', ProfilePic: 'https://i.pravatar.cc/150?img=32'}, Likes: 0, Title: 'Let’s gooo 🐊🔥', Description: 'Meet me by the fountain', Picture: 'https://picsum.photos/800/600'}, {id: '2', User: {Name: 'Lacy Hunters', ProfilePic: 'https://i.pravatar.cc/150?img=32'}, Likes: 0, Title: 'Let’s gooo 🐊🔥', Description: 'Meet me by the fountain', Picture: 'https://picsum.photos/800/600'}, {id: '3', User: {Name: 'Lacy Hunters', ProfilePic: 'https://i.pravatar.cc/150?img=32'}, Likes: 0, Title: 'Let’s gooo 🐊🔥', Description: 'Meet me by the fountain', Picture: 'https://picsum.photos/800/600'}]},
-        { id: '2', User: {Name: 'Mark Magic', ProfilePic: 'https://i.pravatar.cc/150?img=32'}, date: today, title: 'Career Fair', time: '1:00 PM', tag: '#career', posts: [{id: '4', User: {Name: 'Lacy Hunters', ProfilePic: 'https://i.pravatar.cc/150?img=32'}, Likes: 0, Title: 'Squad pulling up tonight 💃🏾', Description: 'We linking at Turlington at 6PM sharp', Picture: 'https://picsum.photos/800/600'}, {id: '5', User: {Name: 'Lacy Hunters', ProfilePic: 'https://i.pravatar.cc/150?img=32'}, Likes: 0, Title: 'Squad pulling up tonight 💃🏾', Description: 'We linking at Turlington at 6PM sharp', Picture: 'https://picsum.photos/800/600'}, {id: '6', User: {Name: 'Lacy Hunters', ProfilePic: 'https://i.pravatar.cc/150?img=32'}, Likes: 0, Title: 'Squad pulling up tonight 💃🏾', Description: 'We linking at Turlington at 6PM sharp', Picture: 'https://picsum.photos/800/600'}]},
-        { id: '3', User: {Name: 'Beaty Green', ProfilePic: 'https://i.pravatar.cc/150?img=32'}, date: today, title: 'Trivia Night', time: '7:00 PM', tag: '#fun', posts: [{id: '7', User: {Name: 'Lacy Hunters', ProfilePic: 'https://i.pravatar.cc/150?img=32'}, Likes: 0, Title: 'First Gator Pulse meetup 🐊💬', Description: 'Come chill, meet new people, and vibe with us 🎶', Picture: 'https://picsum.photos/800/600'}]},
-        // Add more to test scrolling
-      ];
+      // const fakeEvents = [
+      //   { id: '1', User: {Name: 'Lacy Hunters', ProfilePic: 'https://i.pravatar.cc/150?img=32'}, date: today, title: 'Yoga on the Lawn', time: '9:00 AM', tag: '#wellness', posts: [{id: '1', User: {Name: 'Lacy Hunters', ProfilePic: 'https://i.pravatar.cc/150?img=32'}, Likes: 0, Title: 'Let’s gooo 🐊🔥', Description: 'Meet me by the fountain', Picture: 'https://picsum.photos/800/600'}, {id: '2', User: {Name: 'Lacy Hunters', ProfilePic: 'https://i.pravatar.cc/150?img=32'}, Likes: 0, Title: 'Let’s gooo 🐊🔥', Description: 'Meet me by the fountain', Picture: 'https://picsum.photos/800/600'}, {id: '3', User: {Name: 'Lacy Hunters', ProfilePic: 'https://i.pravatar.cc/150?img=32'}, Likes: 0, Title: 'Let’s gooo 🐊🔥', Description: 'Meet me by the fountain', Picture: 'https://picsum.photos/800/600'}]},
+      //   { id: '2', User: {Name: 'Mark Magic', ProfilePic: 'https://i.pravatar.cc/150?img=32'}, date: today, title: 'Career Fair', time: '1:00 PM', tag: '#career', posts: [{id: '4', User: {Name: 'Lacy Hunters', ProfilePic: 'https://i.pravatar.cc/150?img=32'}, Likes: 0, Title: 'Squad pulling up tonight 💃🏾', Description: 'We linking at Turlington at 6PM sharp', Picture: 'https://picsum.photos/800/600'}, {id: '5', User: {Name: 'Lacy Hunters', ProfilePic: 'https://i.pravatar.cc/150?img=32'}, Likes: 0, Title: 'Squad pulling up tonight 💃🏾', Description: 'We linking at Turlington at 6PM sharp', Picture: 'https://picsum.photos/800/600'}, {id: '6', User: {Name: 'Lacy Hunters', ProfilePic: 'https://i.pravatar.cc/150?img=32'}, Likes: 0, Title: 'Squad pulling up tonight 💃🏾', Description: 'We linking at Turlington at 6PM sharp', Picture: 'https://picsum.photos/800/600'}]},
+      //   { id: '3', User: {Name: 'Beaty Green', ProfilePic: 'https://i.pravatar.cc/150?img=32'}, date: today, title: 'Trivia Night', time: '7:00 PM', tag: '#fun', posts: [{id: '7', User: {Name: 'Lacy Hunters', ProfilePic: 'https://i.pravatar.cc/150?img=32'}, Likes: 0, Title: 'First Gator Pulse meetup 🐊💬', Description: 'Come chill, meet new people, and vibe with us 🎶', Picture: 'https://picsum.photos/800/600'}]},
+      //   // Add more to test scrolling
+      // ];
       const response = await fetch("http://localhost:5000/getAllPostsAndProfiles", {
         method: "POST",
         headers: {
@@ -45,10 +45,10 @@ export default function FeedPage({page, setPage}) {
         const usr = post.username;
         // console.log(usr);
         const cur = profileData[usr];
-        console.log("cur is: ", cur);
+        // console.log("cur is: ", cur);
         allEvents.push({ id: post.id, User: {Name: cur.displayname, ProfilePic: cur.pfp}, date: post.date, title: post.title, time: post.time, tag: post.tag, posts: [{id: post.id, User: {Name: cur.displayname, ProfilePic: cur.pfp}, Likes: post.likes, Title: post.title, Description: post.description, Picture: post.image}]})
       })
-      console.log(allEvents.length);
+      // console.log(allEvents.length);
 
       setEvents(allEvents);
     };

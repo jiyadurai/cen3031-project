@@ -17,12 +17,12 @@ export default function Profile({page, setPage}) {
     const [ userNotFound, setUserNotFound ] = useState(false);
 
     const toggleMakePostModalOff = () => {
-        console.log("toggleMakePostModalOff called");
+        // console.log("toggleMakePostModalOff called");
         setMakingPost(false);
     }
 
     const toggleEditingProfileOff = () => {
-        console.log("toggleEditingProfile called");
+        // console.log("toggleEditingProfile called");
         setEditingProfile(false);
     }
     

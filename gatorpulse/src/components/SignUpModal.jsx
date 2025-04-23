@@ -1,22 +1,27 @@
 import { useState, useEffect } from "react";
+import { useUser } from './UserContext';
+import { useNavigate } from 'react-router-dom';
 
 export default function SignUpModal({ OpenSignUpModal, toggleModalOff }) {
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [username, setUsername] = useState("");
+    const [ signupFailure, setSignupFailure ] = useState(null);
+    const { setUser } = useUser();
+    const navigate = useNavigate();
 
     useEffect(() => {
-        console.log("SignUp Modal rendered");
-        console.log(OpenSignUpModal);
+        // console.log("SignUp Modal rendered");
+        // console.log(OpenSignUpModal);
     }, [OpenSignUpModal]);
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-        console.log("handleSubmit SignUp called");
-        console.log("username: " + username);
-        console.log("password: " + password);
-        console.log("email: " + email);
+        // console.log("handleSubmit SignUp called");
+        // console.log("username: " + username);
+        // console.log("password: " + password);
+        // console.log("email: " + email);
 
         const userData = {
             password,
@@ -34,7 +39,15 @@ export default function SignUpModal({ OpenSignUpModal, toggleModalOff }) {
         });
 
         const result = await response.json()
-        console.log(result) // Handle the response
+        // console.log(result) // Handle the response
+        if (result.message == "signup success!") {
+            setUser(username);
+            navigate(`/profile/${username}`);
+            setSignupFailure(null);
+        }
+        else {
+            setSignupFailure("Failed to sign up, duplicate username or email?");
+        }
     }
 
 
@@ -90,6 +103,13 @@ export default function SignUpModal({ OpenSignUpModal, toggleModalOff }) {
                                 onChange={(e) => setPassword(e.target.value)}
                             />
                         </div>
+                        {
+                          signupFailure && (
+                          <div className="inline-block text-red-500 bg-red-100 border border-red-300 rounded p-2 mb-4">
+                            {loginFailure}
+                          </div>
+                          )
+                        }
                         <div className="modal-action">
                             <button
                                 type="button"

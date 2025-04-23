@@ -27,7 +27,7 @@ export default function MakePostModal({ makingPost, toggleMakePostModalOff }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    console.log("makePost called");
+    // console.log("makePost called");
 
     const timeOfPost = new Date().toJSON();
     const username = user;

@@ -10,7 +10,7 @@ export default function Header({page, selectedDate, setSelectedDate}) {
   return (
   <section className="flex flex-row justify-between items-center bg-white h-[7.38vh] fixed w-full z-[1] top-0 shadow-md px-4">
     {/* Left: Logo and Title */}
-    <div className="flex items-center gap-2">
+    <div className="flex items-center gap-5">
       <Link to="/">
         <img className="w-[50px] h-[50px]" src={HomeLogo} alt="Logo" />
       </Link>
@@ -23,11 +23,14 @@ export default function Header({page, selectedDate, setSelectedDate}) {
       <Link to={`/feed`}>
         <div className="text-black font-bold text-lg">Feed</div>
       </Link>
+      <Link to={`/mapview`}>
+        <div className="text-black font-bold text-lg">MapView</div>
+      </Link>
     </div>
 
     {/* Right: Date Selector (if not on home page) */}
-    {console.log(selectedDate)}
-    {page == 'feed' && selectedDate !== null && (
+    {/* {console.log(selectedDate)} */}
+    {(page == 'feed' || page == 'mapview') && selectedDate !== null && (
       <div className="flex items-center">
         <DateSelector selectedDate={selectedDate} setSelectedDate={setSelectedDate} />
       </div>

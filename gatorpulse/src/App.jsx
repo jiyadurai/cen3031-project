@@ -4,6 +4,7 @@ import Home from "./components/Home";
 import FeedPage from "./components/FeedPage";
 import Profile from "./components/Profile";
 import { UserContext } from './components/UserContext';
+import MapViewer from './components/MapViewer';
 
 
 export default function App() {
@@ -16,6 +17,7 @@ export default function App() {
           <Route path="/" element={<Home page={page} setPage={setPage} />} />
           <Route path="/feed" element={<FeedPage page={page} setPage={setPage} />} />
           <Route path="/profile/:targetUser" element={<Profile page={page} setPage={setPage} />}/>
+          <Route path="/mapview" element={<MapViewer page={page} setPage={setPage}/>}/>
         </Routes>
       </Router>
     </UserContext.Provider>

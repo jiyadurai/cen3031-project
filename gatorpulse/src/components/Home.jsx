@@ -10,18 +10,18 @@ export default function Home({page, setPage, user, setUser}) {
     const [OpenLoginModal, setLoginVisibility] = useState(false);
     const [OpenSignUpModal, setSignUpVisibility] = useState(false);
     const toggleLoginModalOff = () => {
-        console.log("toggleLoginModalOff called");
+        // console.log("toggleLoginModalOff called");
         setLoginVisibility(false);
     }
 
     const toggleSignUpModalOff = () => {
-        console.log("toggleSignModalOff called");
+        // console.log("toggleSignModalOff called");
         setSignUpVisibility(false);
     }
 
     useEffect(() => {
         setPage('home')
-        console.log(page + " page rendered");
+        // console.log(page + " page rendered");
     }, [])
 
   return (
