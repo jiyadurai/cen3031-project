@@ -1,17 +1,11 @@
-from flask import Flask, request, jsonify, url_for, send_from_directory, session
+from flask import Flask, request, jsonify, send_from_directory, url_for, session
 from flask_cors import CORS
-from flask_cors import cross_origin
-import firebase_admin
-from firebase_admin import firestore
 from google.cloud.firestore_v1 import FieldFilter
 import user, database
 import googlemaps
 from dotenv import load_dotenv
 import os
-from firebase_admin import credentials
 from firebase_admin import firestore
-from datetime import datetime
-from flask import render_template, redirect, url_for, session
 
 # initialize flask
 app = Flask(__name__)
@@ -20,13 +14,10 @@ app = Flask(__name__)
 cors = CORS(
     app,
     resources={r"*": {"origins": "http://localhost:5173"}},
-    #origins=["http://localhost:5173", "http://localhost:5173/profile", "http://localhost:5173/makePost"],
     supports_credentials=True
 )
 
 # Initialize Firebase
-# cred = credentials.Certificate("../servicekey.json")
-# firebase_admin.initialize_app(cred)
 load_dotenv(dotenv_path='./gatorpulse/.env')
 api_key = os.environ.get("GOOGLE_API")   # google maps API key
 app.secret_key = os.environ.get("FLASK_SECRET")   # flask key
@@ -102,7 +93,6 @@ def login():
     ).get()
 
     if len(usernameCheck) == 0:
-        # print("Username doesn't exist!")
         return jsonify({"message": "failure!"})
     else:
         passcode = passCheck[0].to_dict().get("password")
@@ -131,7 +121,6 @@ def getUser():
 @app.route("/signup", methods=["POST"])
 def signup():
     data = request.get_json()
-    # print(data.get("username"), data.get("password"), data.get("email"))
 
     # check for existing user or email
     usernameCheck = ref.where(
@@ -167,9 +156,6 @@ def signup():
 # View user profile. For testing profile settings
 @app.route("/profile/<targetuser>", methods=["POST", "GET"])
 def profile(targetuser):
-    # print(f"Got request from {targetuser}")
-    # target_user = database.getUser(target_user)
-    # target_user = target_user.User(target_user)
     target_profile = database.getProfile(targetuser)
     if target_profile == -1:
         failure = jsonify(
@@ -197,7 +183,6 @@ def profile(targetuser):
 @app.route("/makePost", methods=['POST'])
 def make_post():
     data = request.get_json()
-    # print(data)
     candidates = gmaps.find_place(input=data.get("location"), input_type="textquery", fields=['place_id']).get('candidates')
     loc = candidates[0] if candidates else ""
 
@@ -227,7 +212,6 @@ def edit_profile():
     ).get()
 
     if not profile_query:
-        # print("update failure")
         return jsonify({"message": "edit failure!"})
 
     # update profile fields
@@ -238,17 +222,7 @@ def edit_profile():
         "biography": data.get("biography"),
         "pfp": data.get("image")
     })
-    
-    # profs.add(
-    #     {
-    #         "username": data.get("username"),
-    #         "displayname": data.get("username"),
-    #         "biography": "Write something about yourself",
-    #         "pfp": "none"
-    #     }
-    # )
 
-    # print("update success")
     return jsonify({"message": "update success!"})
 
 # serve profile images
@@ -281,7 +255,6 @@ def create_post():
 # gets all posts and profiles for display 
 @app.route('/getAllPostsAndProfiles', methods=['POST'])
 def get_all_posts():
-    result = {}
 
     # gets all posts
     allPosts = {}
@@ -303,7 +276,6 @@ def get_all_posts():
     # gets all profiles
     allProfiles = {}
     for profile in profs.get():
-        # print(profile.get('username'))
         allProfiles[profile.get('username')] = {
             'username': profile.get('username'),
             'displayname': profile.get('displayname'),
