@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 export default function Post({isOpen, setModalOpen, posts, curEvent, allEvents, setEvents}) {
     if (!isOpen) return null;
-    console.log('Received posts:', posts);
+    // console.log('Received posts:', posts);
 
     return (
       <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">

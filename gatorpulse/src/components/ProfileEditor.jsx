@@ -23,7 +23,7 @@ export default function ProfileEditorModal({ makingEdits, toggleEditing }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    console.log("edit profile called");
+    // console.log("edit profile called");
 
     const username = user;
 
