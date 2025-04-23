@@ -225,7 +225,7 @@ def edit_profile():
 
     return jsonify({"message": "update success!"})
 
-# serve profile images
+# get profile image from assets
 @app.route("/images/<filename>", methods=["GET"])
 def get_images(filename):
     return send_from_directory(directory='assets', path=filename)
