@@ -13,6 +13,7 @@ from firebase_admin import firestore
 from datetime import datetime
 from flask import render_template, redirect, url_for, session
 
+# initialize flask
 app = Flask(__name__)
 
 # Apply CORS to all routes with the correct origin
@@ -27,17 +28,20 @@ cors = CORS(
 # cred = credentials.Certificate("../servicekey.json")
 # firebase_admin.initialize_app(cred)
 load_dotenv(dotenv_path='./gatorpulse/.env')
-api_key = os.environ.get("GOOGLE_API")
-app.secret_key = os.environ.get("FLASK_SECRET")
-gmaps = googlemaps.Client(key=api_key)
+api_key = os.environ.get("GOOGLE_API")   # google maps API key
+app.secret_key = os.environ.get("FLASK_SECRET")   # flask key
+gmaps = googlemaps.Client(key=api_key)    # maps API client
 
+# initialize Firestore database
 db = firestore.client()
-ref = db.collection("users")
-profs = db.collection("profiles")
-posts = db.collection("posts")
+ref = db.collection("users")     # reference to 'users'
+profs = db.collection("profiles")   # reference to 'profiles'
+posts = db.collection("posts")   # reference to 'posts'
 
+# default profile picture
 default_pfp = "./assets/blank-pfp.png"
 
+# Post class that represents posts and interacts with Firestore
 class Post:
     def __init__(self, id, username, media_type, url, title, description, likes=0, createdAt=None):
         self.id = id
@@ -50,6 +54,7 @@ class Post:
         self.createdAt = createdAt or firestore.SERVER_TIMESTAMP
         self.likeUsers = []
 
+    # convert to dictionary to store in Firestore
     def to_dict(self):
         return {
             "id": self.id,
@@ -63,6 +68,7 @@ class Post:
             "likeUsers": self.likeUsers
         }
 
+    # create Post instance from Firestore doc
     @staticmethod
     def from_firestore(doc):
         data = doc.to_dict()
@@ -77,15 +83,17 @@ class Post:
             createdAt = data.get("createdAt")
         )
 
-
+# checks route is up
 @app.route("/")
 def home():
     return "Server is up and running!"
 
+# user login route
 @app.route("/login", methods=["POST"])
 def login():
     data = request.get_json()
 
+    # check if user exists
     usernameCheck = ref.where(
         filter=FieldFilter("username", "==", data.get("username"))
     ).get()
@@ -102,14 +110,17 @@ def login():
             print("Password doesn't match!")
             return jsonify({"message": "login failure!"})
         print("Logging in...")
+        # login successful, store user in session
         session['user'] = {'username' : data.get("username")}
         return jsonify({"message": "login success!"}), 200
 
+# user logout route
 @app.route("/logout", methods=["POST"])
 def logout():
     session.clear()
     return jsonify({"message": "logout success!"}), 200
 
+# get user that is logged in
 @app.route("/getUser", methods=["POST"])
 def getUser():
     user = session.get('user')
@@ -117,11 +128,13 @@ def getUser():
         return jsonify({"message": "failure!"}), 401
     return jsonify({'user': user}), 200
 
+# user signup route
 @app.route("/signup", methods=["POST"])
 def signup():
     data = request.get_json()
     print(data.get("username"), data.get("password"), data.get("email"))
 
+    # check for existing user or email
     usernameCheck = ref.where(
         filter=FieldFilter("username", "==", data.get("username"))
     ).get()
@@ -130,6 +143,7 @@ def signup():
     if len(usernameCheck) > 0:
         return jsonify({"message": "signup failure!"})
     else:
+        # add user to 'users' and 'profiles'
         ref.add(
             {
                 "createdAt": firestore.SERVER_TIMESTAMP,
@@ -151,7 +165,7 @@ def signup():
         return jsonify({"message": "signup success!"}), 200
     
 
-# For testing profile settings
+# View user profile. For testing profile settings
 @app.route("/profile/<targetuser>", methods=["POST", "GET"])
 def profile(targetuser):
     print(f"Got request from {targetuser}")
@@ -168,26 +182,27 @@ def profile(targetuser):
     
     data_dict = target_profile.to_dict()
 
+    # use custom picture if set
     image_url = url_for('get_images', filename="blank-pfp.png")
     if data_dict['pfp'] != "none":
         image_url = data_dict['pfp']
 
-    # testUser.updateBio("Hello! My name is Adam Apple!")
-
-    response = jsonify({
+    return jsonify({
         "displayname": data_dict['displayname'],
         "username": data_dict['username'],
         "biography": data_dict['biography'],
         "pfp_url": image_url
     })
-    return response
 
+# create new post route
 @app.route("/makePost", methods=['POST'])
 def make_post():
     data = request.get_json()
     print(data)
     candidates = gmaps.find_place(input=data.get("location"), input_type="textquery", fields=['place_id']).get('candidates')
     loc = candidates[0] if candidates else ""
+
+    # add post to 'posts'
     posts.add(
         {
             "username": data.get("username"),
@@ -204,10 +219,10 @@ def make_post():
     )
     return jsonify({"message": "successfully posted"})
 
+# edit profile info
 @app.route("/editProfile", methods=["POST"])
 def edit_profile():
     data = request.get_json()
-    # print(data.get("username"), data.get("password"), data.get("email"))
     print(data)
 
     profile_query = profs.where(
@@ -217,7 +232,8 @@ def edit_profile():
     if not profile_query:
         print("update failure")
         return jsonify({"message": "edit failure!"})
-    
+
+    # update profile fields
     profile_to_update = profile_query[0]
     prof_ref = profs.document(profile_to_update.id)
     prof_ref.update({
@@ -238,14 +254,17 @@ def edit_profile():
     print("update success")
     return jsonify({"message": "update success!"})
 
+# serve profile images
 @app.route("/images/<filename>", methods=["GET"])
 def get_images(filename):
     return send_from_directory(directory='assets', path=filename)
 
+# create post using Post class
 @app.route('/create_post', methods=['POST'])
 def create_post():
     data = request.get_json()
 
+    # validate required areas
     username = data.get("username"),
     id = data.get("id"),
     media_type = data.get("media_type"),
@@ -262,9 +281,12 @@ def create_post():
 
     return jsonify({"message": "success"})
 
+# gets all posts and profiles for display 
 @app.route('/getAllPostsAndProfiles', methods=['POST'])
 def get_all_posts():
     result = {}
+
+    # gets all posts
     allPosts = {}
     for post in posts.get():
         allPosts[post.id] = {
@@ -280,6 +302,8 @@ def get_all_posts():
             'tag': post.get('tag'),
             'time': post.get('time')
         }
+
+    # gets all profiles
     allProfiles = {}
     for profile in profs.get():
         print(profile.get('username'))
@@ -294,6 +318,7 @@ def get_all_posts():
         'profiles': allProfiles
     })
 
+# use Google Maps API to find place in Gainesville
 @app.route('/maps', methods=['GET'])
 def maps():
     gainesville_coords = (29.6516, -82.3248)
@@ -317,6 +342,6 @@ def maps():
     else:
         return jsonify({"message": "No places found"})
 
-
+# run flask app
 if __name__ == "__main__":
     app.run(debug=True, port=5000)
